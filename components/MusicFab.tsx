@@ -93,24 +93,24 @@ const MusicFab = forwardRef<MusicFabHandle>((_, ref) => {
           position: "absolute", inset: 0, borderRadius: "50%",
           animation: playing ? "vinylSpin 2s linear infinite" : "none",
           background: `
-            radial-gradient(circle, #0a1a10 4%, transparent 4.5%),
-            radial-gradient(circle, #E8C887 0%, #C28F45 17%, #9c6f2e 19%, transparent 19.5%),
+            radial-gradient(circle, #E8C887 4%, transparent 4.5%),
+            radial-gradient(circle, #143322 0%, #0f2618 25%, #0a1a10 27%, transparent 27.5%),
             repeating-radial-gradient(circle,
-              transparent 21%, rgba(255,255,255,0.04) 21.7%, transparent 22.3%,
-              transparent 27%, rgba(255,255,255,0.04) 27.7%, transparent 28.3%,
-              transparent 33%, rgba(255,255,255,0.04) 33.7%, transparent 34.3%,
-              transparent 39%, rgba(255,255,255,0.04) 39.7%, transparent 40.3%,
-              transparent 45%, rgba(255,255,255,0.04) 45.7%, transparent 46.3%,
-              transparent 51%, rgba(255,255,255,0.04) 51.7%, transparent 52.3%,
-              transparent 57%, rgba(255,255,255,0.04) 57.7%, transparent 58.3%,
-              transparent 63%, rgba(255,255,255,0.04) 63.7%, transparent 64.3%,
-              transparent 69%, rgba(255,255,255,0.04) 69.7%, transparent 70.3%,
-              transparent 75%, rgba(255,255,255,0.04) 75.7%, transparent 76.3%,
-              transparent 81%, rgba(255,255,255,0.04) 81.7%, transparent 82.3%,
-              transparent 87%, rgba(255,255,255,0.04) 87.7%, transparent 88.3%,
-              transparent 93%, rgba(255,255,255,0.04) 93.7%, transparent 94.3%
+              transparent 21%, rgba(0,0,0,0.12) 21.7%, transparent 22.3%,
+              transparent 27%, rgba(0,0,0,0.12) 27.7%, transparent 28.3%,
+              transparent 33%, rgba(0,0,0,0.12) 33.7%, transparent 34.3%,
+              transparent 39%, rgba(0,0,0,0.12) 39.7%, transparent 40.3%,
+              transparent 45%, rgba(0,0,0,0.12) 45.7%, transparent 46.3%,
+              transparent 51%, rgba(0,0,0,0.12) 51.7%, transparent 52.3%,
+              transparent 57%, rgba(0,0,0,0.12) 57.7%, transparent 58.3%,
+              transparent 63%, rgba(0,0,0,0.12) 63.7%, transparent 64.3%,
+              transparent 69%, rgba(0,0,0,0.12) 69.7%, transparent 70.3%,
+              transparent 75%, rgba(0,0,0,0.12) 75.7%, transparent 76.3%,
+              transparent 81%, rgba(0,0,0,0.12) 81.7%, transparent 82.3%,
+              transparent 87%, rgba(0,0,0,0.12) 87.7%, transparent 88.3%,
+              transparent 93%, rgba(0,0,0,0.12) 93.7%, transparent 94.3%
             ),
-            radial-gradient(circle, #0a1a10 0%, #143322 60%, #0a1a10 100%)
+            radial-gradient(circle, #f4e1a8 0%, #E8C887 32%, #C28F45 72%, #9c6f2e 100%)
           `,
         }}>
           <div style={{
@@ -134,7 +134,7 @@ const MusicFab = forwardRef<MusicFabHandle>((_, ref) => {
           transition: "opacity 0.35s ease",
           pointerEvents: "none",
         }}>
-          <svg width="19" height="19" viewBox="0 0 24 24" fill="rgba(212,197,178,0.95)">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="#E8C887">
             <path d="M8 5v14l11-7z" />
           </svg>
         </div>
