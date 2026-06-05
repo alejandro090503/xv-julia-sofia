@@ -22,11 +22,8 @@ function VenueCard({ type, name, address, time, mapsUrl, lat, lng }: VenueProps)
       border: "1px solid rgba(232,200,135,0.25)",
       boxShadow: "0 14px 40px rgba(0,0,0,0.28)",
     }}>
-      <div style={{
-        position: "absolute", left: 0, top: "12%", bottom: "12%", width: 2.5,
-        background: "linear-gradient(to bottom, transparent, #C28F45 30%, #E8C887 60%, #C28F45 85%, transparent)",
-        opacity: 0.55,
-      }} />
+      {/* Haz dorado animado que recorre el borde */}
+      <div className="venue-beam" aria-hidden="true" />
 
       <div style={{ padding: "34px 28px 0", textAlign: "center" }}>
         <div style={{

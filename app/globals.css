@@ -69,6 +69,43 @@ body {
   50%      { opacity: 0.95; transform: translateY(-6px) scale(1.1); }
 }
 
+/* ===== Border beam — luz dorada que recorre el borde de las cards de Lugares ===== */
+.venue-beam {
+  position: absolute;
+  inset: 0;
+  border-radius: 28px;
+  padding: 2px;            /* grosor del haz */
+  pointer-events: none;
+  z-index: 3;
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+          mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+          mask-composite: exclude;
+}
+.venue-beam::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 240%;
+  aspect-ratio: 1 / 1;
+  transform: translate(-50%, -50%);
+  background: conic-gradient(from 0deg,
+    rgba(232,200,135,0) 0deg,
+    rgba(232,200,135,0) 210deg,
+    rgba(232,200,135,0.5) 288deg,
+    #fff4d6 332deg,
+    #E8C887 346deg,
+    rgba(232,200,135,0) 360deg);
+  animation: beamSpin 4.5s linear infinite;
+}
+@keyframes beamSpin {
+  to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .venue-beam::before { animation: none; }
+}
+
 .rv {
   opacity: 0;
   transform: translateY(22px);
