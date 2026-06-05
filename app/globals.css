@@ -1,0 +1,75 @@
+@import "tailwindcss";
+
+:root {
+  --bg: #f7f4ef;
+  --accent: #1c402c;
+  --dark: #0f2618;
+  --text: #1a1a1a;
+  --surface: rgba(28,64,44,0.06);
+  --card: rgba(255,255,255,0.90);
+  --gold: #D4C5B2;
+  --gold-dark: #b8a48e;
+  --cream: #f7f4ef;
+  --green-light: #2d5a3f;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Lato', 'Inter', sans-serif;
+  font-weight: 500;
+  font-size: 17px;
+  color: var(--text);
+  background: var(--bg);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+@keyframes floatUp {
+  0%   { transform: translateY(0) rotate(0deg); opacity: 0.6; }
+  100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+}
+
+@keyframes hintFloat {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-5px); }
+}
+
+@keyframes shimmerSweep {
+  0%   { left: -130%; }
+  55%  { left: 200%; }
+  100% { left: 200%; }
+}
+
+@keyframes vinylSpin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes vinylPulse {
+  0%, 100% { transform: scale(1);    opacity: 0.32; }
+  50%       { transform: scale(1.18); opacity: 0.06; }
+}
+
+@keyframes sealFloat {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50%      { transform: translateY(-4px) rotate(2deg); }
+}
+
+.rv {
+  opacity: 0;
+  transform: translateY(22px);
+  transition: opacity 0.55s ease, transform 0.55s ease;
+}
+.rv.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
