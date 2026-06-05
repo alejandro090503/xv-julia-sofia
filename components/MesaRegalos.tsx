@@ -153,11 +153,11 @@ export default function MesaRegalos() {
 
         <p style={{
           fontFamily: "var(--font-lato), sans-serif",
-          fontSize: 10,
+          fontSize: 11,
           letterSpacing: 3,
           textTransform: "uppercase",
           color: "#E8C887",
-          opacity: open ? 0 : 0.7,
+          opacity: open ? 0 : 0.9,
           transition: "opacity .3s",
           marginTop: 8,
         }}>

@@ -62,7 +62,7 @@ export default function RSVPSection() {
             fontSize: 13,
             letterSpacing: 5,
             textTransform: "uppercase",
-            color: "#9c6f2e",
+            color: "#7d5720",
             marginBottom: 6,
           }}>
             Confirmación de Asistencia
@@ -134,7 +134,7 @@ export default function RSVPSection() {
             fontSize: 11,
             letterSpacing: 3,
             textTransform: "uppercase",
-            color: "#9c6f2e",
+            color: "#7d5720",
             fontWeight: 600,
             width: "100%",
             justifyContent: "center",
