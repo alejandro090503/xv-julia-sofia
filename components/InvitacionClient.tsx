@@ -11,6 +11,7 @@ import Familia from "./Familia";
 import MesaRegalos from "./MesaRegalos";
 import PhotoFrame from "./PhotoFrame";
 import RSVPSection from "./RSVPSection";
+import Carrusel from "./Carrusel";
 import ClosingPhoto from "./ClosingPhoto";
 import Footer from "./Footer";
 import MusicFab, { type MusicFabHandle } from "./MusicFab";
@@ -53,6 +54,15 @@ export default function InvitacionClient() {
         }}
       >
         <Hero />
+
+        {/* Carrusel de momentos — después del hero */}
+        <ScrollReveal>
+          <Carrusel />
+        </ScrollReveal>
+
+        <ScrollReveal>
+          <Ornament />
+        </ScrollReveal>
 
         <ScrollReveal>
           <Familia />
