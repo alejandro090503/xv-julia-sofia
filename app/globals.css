@@ -64,6 +64,11 @@ body {
   50%      { transform: scale(1.03); }
 }
 
+@keyframes dustTwinkle {
+  0%, 100% { opacity: 0.15; transform: translateY(0) scale(0.7); }
+  50%      { opacity: 0.95; transform: translateY(-6px) scale(1.1); }
+}
+
 .rv {
   opacity: 0;
   transform: translateY(22px);

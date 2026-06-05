@@ -50,8 +50,10 @@ export default function ClosingPhoto() {
       <div style={{
         position: "relative",
         fontFamily: "var(--font-great-vibes), cursive",
-        fontSize: 88,
-        lineHeight: 1,
+        fontSize: 72,
+        lineHeight: 1.25,
+        padding: "0 30px",
+        overflow: "visible",
         background: "linear-gradient(135deg,#C28F45 0%,#E8C887 50%,#C28F45 100%)",
         WebkitBackgroundClip: "text",
         WebkitTextFillColor: "transparent",

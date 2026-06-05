@@ -1,57 +1,6 @@
 "use client";
 
-/* Silueta elegante de pareja en atuendo formal (oro/oscuro sobre verde) */
-function CoupleSilhouette() {
-  return (
-    <svg viewBox="0 0 220 280" width="200" height="255" fill="none" aria-hidden="true"
-      style={{ filter: "drop-shadow(0 8px 22px rgba(0,0,0,0.4))" }}>
-      <defs>
-        <linearGradient id="dc-dark" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#15301f" />
-          <stop offset="100%" stopColor="#091a10" />
-        </linearGradient>
-        <linearGradient id="dc-gown" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#16321f" />
-          <stop offset="100%" stopColor="#0a1d11" />
-        </linearGradient>
-      </defs>
-
-      {/* ── MUJER (vestido largo) ── */}
-      <g stroke="#C28F45" strokeWidth="1" strokeLinejoin="round">
-        {/* cabello */}
-        <path d="M78 30 q-13 4 -13 22 q0 14 5 22 l4 -2 q-4 -10 -3 -22 q1 -10 7 -16 q6 -6 18 -5 q-7 -5 -18 1 Z" fill="url(#dc-dark)" />
-        {/* cabeza */}
-        <ellipse cx="86" cy="32" rx="11" ry="13" fill="#1d3a27" />
-        {/* hombros desnudos + busto */}
-        <path d="M74 60 q12 -8 24 0 l-3 14 q-9 -5 -18 0 Z" fill="url(#dc-gown)" />
-        {/* vestido A-line hasta el piso */}
-        <path d="M77 72 q9 -5 18 0 q3 30 7 60 q6 50 14 122 l-60 0 q8 -72 14 -122 q4 -30 7 -60 Z" fill="url(#dc-gown)" />
-        {/* brillos del vestido */}
-        <path d="M84 120 q2 60 -6 132" stroke="#C28F45" strokeWidth="0.5" opacity="0.4" fill="none" />
-        <path d="M92 120 q1 60 4 132" stroke="#C28F45" strokeWidth="0.5" opacity="0.4" fill="none" />
-        {/* cabello largo lado derecho */}
-        <path d="M94 30 q12 6 11 24 q-1 14 -6 22 l-4 -3 q4 -9 4 -20 q0 -12 -8 -18 Z" fill="url(#dc-dark)" />
-      </g>
-
-      {/* ── HOMBRE (esmoquin) ── */}
-      <g stroke="#C28F45" strokeWidth="1" strokeLinejoin="round">
-        {/* cabello */}
-        <path d="M126 26 q-11 0 -13 12 q11 -6 26 0 q-2 -12 -13 -12 Z" fill="url(#dc-dark)" />
-        {/* cabeza */}
-        <ellipse cx="139" cy="38" rx="10" ry="12" fill="#1d3a27" />
-        {/* saco / torso */}
-        <path d="M124 62 q15 -9 30 0 l3 100 q-8 4 -16 4 q-2 -60 -2 -60 q0 0 -2 60 q-8 0 -16 -4 Z" fill="url(#dc-dark)" />
-        {/* camisa + solapas V */}
-        <path d="M132 62 l7 16 l7 -16 l-3 -2 q-4 3 -8 0 Z" fill="#1f3c28" />
-        {/* moño */}
-        <path d="M135 66 l4 3 l4 -3 l0 5 l-4 -3 l-4 3 Z" fill="#C28F45" opacity="0.9" />
-        {/* piernas / pantalón */}
-        <path d="M126 164 q6 3 12 3 l-1 88 l-9 0 Z" fill="url(#dc-dark)" />
-        <path d="M152 164 q-6 3 -12 3 l1 88 l9 0 Z" fill="url(#dc-dark)" />
-      </g>
-    </svg>
-  );
-}
+const COUPLE_IMG = "https://bsjoelxktbvlavfoozhk.supabase.co/storage/v1/object/public/fotos-clientes/img/xv-julia-sofia/dresscode-pareja.png";
 
 export default function DressCode() {
   return (
@@ -83,7 +32,16 @@ export default function DressCode() {
       </h2>
 
       <div style={{ display: "flex", justifyContent: "center", marginBottom: 16 }}>
-        <CoupleSilhouette />
+        <img
+          src={COUPLE_IMG}
+          alt="Pareja en código de vestimenta etiqueta — esmoquin y vestido largo"
+          loading="lazy"
+          style={{
+            width: 210,
+            height: "auto",
+            filter: "drop-shadow(0 12px 26px rgba(0,0,0,0.45))",
+          }}
+        />
       </div>
 
       <p style={{

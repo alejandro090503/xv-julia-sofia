@@ -14,6 +14,7 @@ import RSVPSection from "./RSVPSection";
 import ClosingPhoto from "./ClosingPhoto";
 import Footer from "./Footer";
 import MusicFab, { type MusicFabHandle } from "./MusicFab";
+import GoldDust from "./GoldDust";
 import ScrollReveal from "./ScrollReveal";
 
 export default function InvitacionClient() {
@@ -118,6 +119,9 @@ export default function InvitacionClient() {
 
         <Footer />
       </div>
+
+      {/* Polvo dorado — aparece tras el header */}
+      {contentVisible && <GoldDust />}
 
       <MusicFab ref={musicRef} />
     </>
