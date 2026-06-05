@@ -2,191 +2,169 @@
 import { useEffect, useRef, useState } from "react";
 
 interface Props {
-  onOpen: () => void;
+  onStart?: () => void; // se llama al tocar (gesto) — arranca música
+  onOpen: () => void;   // se llama al terminar el video — revela invitación
 }
 
-export default function SplashScreen({ onOpen }: Props) {
-  const titleRef = useRef<HTMLDivElement>(null);
-  const nameRef = useRef<HTMLDivElement>(null);
-  const hintRef = useRef<HTMLButtonElement>(null);
-  const screenRef = useRef<HTMLDivElement>(null);
-  const [exiting, setExiting] = useState(false);
+const POSTER = "https://bsjoelxktbvlavfoozhk.supabase.co/storage/v1/object/public/fotos-clientes/img/xv-julia-sofia/sobre-poster.jpg";
+const VIDEO = "https://bsjoelxktbvlavfoozhk.supabase.co/storage/v1/object/public/fotos-clientes/video/xv-julia-sofia/sobre.mp4";
 
+export default function SplashScreen({ onStart, onOpen }: Props) {
+  const screenRef = useRef<HTMLDivElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const captionRef = useRef<HTMLDivElement>(null);
+  const hintRef = useRef<HTMLButtonElement>(null);
+  const [phase, setPhase] = useState<"idle" | "opening">("idle");
+  const revealedRef = useRef(false);
+
+  /* Entrada */
   useEffect(() => {
     const el = screenRef.current;
     if (!el) return;
-    requestAnimationFrame(() => {
-      if (el) el.style.opacity = "1";
-    });
-    const schedule = [
-      { ref: titleRef, delay: 400, styles: { opacity: "1", transform: "translateY(0)" } },
-      { ref: nameRef, delay: 800, styles: { opacity: "1", transform: "translateY(0)" } },
-      { ref: hintRef, delay: 1300, styles: { opacity: "1" } },
-    ];
-    const timers = schedule.map(({ ref, delay, styles }) =>
-      setTimeout(() => { if (ref.current) Object.assign(ref.current.style, styles); }, delay)
-    );
-    return () => timers.forEach(clearTimeout);
+    requestAnimationFrame(() => { if (el) el.style.opacity = "1"; });
+    const t1 = setTimeout(() => { if (captionRef.current) captionRef.current.style.opacity = "1"; }, 500);
+    const t2 = setTimeout(() => { if (hintRef.current) hintRef.current.style.opacity = "1"; }, 1000);
+    return () => { clearTimeout(t1); clearTimeout(t2); };
   }, []);
 
-  const handleOpen = () => {
-    if (exiting) return;
-    setExiting(true);
+  /* Revela la invitación (fade out del splash) */
+  const reveal = () => {
+    if (revealedRef.current) return;
+    revealedRef.current = true;
     const el = screenRef.current;
     if (el) {
-      el.style.transition = "opacity 0.75s cubic-bezier(0.4,0,0.2,1)";
+      el.style.transition = "opacity 0.8s ease";
       el.style.opacity = "0";
     }
     onOpen();
   };
 
+  /* Toca para abrir → reproduce el video del sobre */
+  const handleTap = () => {
+    if (phase !== "idle") return;
+    setPhase("opening");
+    onStart?.(); // música dentro del gesto
+
+    const v = videoRef.current;
+    if (v) {
+      v.play().then(() => {
+        // seguridad: si 'ended' no dispara, revela tras la duración
+        const ms = (isFinite(v.duration) && v.duration > 0 ? v.duration : 7) * 1000 + 400;
+        setTimeout(reveal, ms);
+      }).catch(() => {
+        // si no puede reproducir, revela directo
+        setTimeout(reveal, 300);
+      });
+    } else {
+      setTimeout(reveal, 300);
+    }
+  };
+
   return (
     <div
       ref={screenRef}
-      onClick={handleOpen}
+      onClick={handleTap}
       role="button"
-      aria-label="Toca para ver la invitación"
+      aria-label="Toca para abrir la invitación"
       style={{
         position: "fixed",
         inset: 0,
         zIndex: 10000,
         overflow: "hidden",
-        cursor: "pointer",
-        background: "linear-gradient(160deg, #0f2618 0%, #1c402c 40%, #0f2618 100%)",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
+        cursor: phase === "idle" ? "pointer" : "default",
+        background: "#0f2618",
         opacity: 0,
         transition: "opacity 0.6s ease",
       }}
     >
-      <div style={{ position: "fixed", inset: 0, zIndex: -1,
-        background: "linear-gradient(160deg, #0f2618 0%, #1c402c 40%, #0f2618 100%)" }} />
+      {/* Video del sobre (poster = foto del sobre cerrado) */}
+      <video
+        ref={videoRef}
+        src={VIDEO}
+        poster={POSTER}
+        muted
+        playsInline
+        preload="auto"
+        onEnded={reveal}
+        style={{
+          position: "absolute",
+          inset: 0,
+          width: "100%",
+          height: "100%",
+          objectFit: "cover",
+        }}
+      />
 
+      {/* Scrim inferior para legibilidad del texto */}
       <div style={{
-        position: "absolute", inset: 0,
-        background: "radial-gradient(ellipse 60% 45% at 50% 40%, rgba(232,200,135,0.14) 0%, transparent 70%)",
+        position: "absolute", left: 0, right: 0, bottom: 0, height: "42%",
+        background: "linear-gradient(to top, rgba(15,38,24,0.88) 0%, rgba(15,38,24,0.45) 45%, transparent 100%)",
+        opacity: phase === "idle" ? 1 : 0,
+        transition: "opacity 0.6s ease",
         pointerEvents: "none",
       }} />
 
-      <Particles />
-
-      <div
-        ref={titleRef}
-        style={{
-          fontFamily: "var(--font-great-vibes), cursive",
-          fontSize: "clamp(48px, 14vw, 72px)",
-          lineHeight: 1.15,
-          color: "#E8C887",
-          textShadow: "0 2px 20px rgba(232,200,135,0.32)",
-          opacity: 0,
-          transform: "translateY(16px)",
-          transition: "opacity 0.8s ease, transform 0.8s ease",
-          textAlign: "center",
-        }}
-      >
-        Mis XV Años
-      </div>
-
-      <div
-        ref={nameRef}
-        style={{
-          fontFamily: "var(--font-great-vibes), cursive",
-          fontSize: "clamp(56px, 18vw, 96px)",
-          lineHeight: 1.15,
-          color: "#E8C887",
-          textShadow: "0 3px 24px rgba(232,200,135,0.35)",
-          marginTop: 4,
-          opacity: 0,
-          transform: "translateY(16px)",
-          transition: "opacity 0.8s ease, transform 0.8s ease",
-          textAlign: "center",
-          padding: "0 20px",
-        }}
-      >
-        Julia Sofía
-      </div>
-
+      {/* Caption + botón (solo en idle) */}
       <div style={{
-        width: 100,
-        height: 1,
-        margin: "28px auto 10px",
-        background: "linear-gradient(90deg, transparent, #E8C887, transparent)",
-        opacity: 0.45,
-      }} />
-
-      <p style={{
-        fontFamily: "var(--font-cormorant), serif",
-        fontSize: 16,
-        letterSpacing: 3,
-        color: "rgba(232,200,135,0.80)",
-        textAlign: "center",
-        marginBottom: 32,
-        fontWeight: 500,
+        position: "absolute", left: 0, right: 0, bottom: "8%",
+        display: "flex", flexDirection: "column", alignItems: "center",
+        opacity: phase === "idle" ? 1 : 0,
+        transition: "opacity 0.5s ease",
+        pointerEvents: phase === "idle" ? "auto" : "none",
       }}>
-        Has recibido una invitación especial
-      </p>
-
-      <button
-        ref={hintRef}
-        style={{
+        <div
+          ref={captionRef}
+          style={{
+            fontFamily: "var(--font-great-vibes), cursive",
+            fontSize: "clamp(40px, 13vw, 60px)",
+            lineHeight: 1.1,
+            color: "#E8C887",
+            textShadow: "0 2px 16px rgba(0,0,0,0.7)",
+            opacity: 0,
+            transition: "opacity 0.8s ease",
+            marginBottom: 4,
+          }}
+        >
+          Julia Sofía
+        </div>
+        <div style={{
           fontFamily: "var(--font-cormorant), serif",
-          fontSize: 13,
-          letterSpacing: 6,
+          fontStyle: "italic",
+          fontSize: 14,
+          letterSpacing: 4,
           textTransform: "uppercase",
-          color: "#E8C887",
-          opacity: 0,
-          cursor: "pointer",
-          whiteSpace: "nowrap",
-          padding: "14px 40px",
-          background: "rgba(232,200,135,0.12)",
-          border: "1px solid rgba(232,200,135,0.32)",
-          borderRadius: 40,
-          backdropFilter: "blur(12px)",
-          WebkitBackdropFilter: "blur(12px)",
-          animation: "hintFloat 3.2s ease-in-out infinite",
-          transition: "opacity 0.7s ease",
-          fontWeight: 600,
-          textIndent: 6,
-        }}
-      >
-        Toca para abrir
-      </button>
+          color: "rgba(243,239,230,0.9)",
+          textShadow: "0 1px 8px rgba(0,0,0,0.7)",
+          marginBottom: 22,
+        }}>
+          Mis XV Años
+        </div>
+
+        <button
+          ref={hintRef}
+          style={{
+            fontFamily: "var(--font-cormorant), serif",
+            fontSize: 13,
+            letterSpacing: 6,
+            textTransform: "uppercase",
+            color: "#0f2618",
+            opacity: 0,
+            cursor: "pointer",
+            whiteSpace: "nowrap",
+            padding: "14px 42px",
+            background: "linear-gradient(135deg, #E8C887, #C28F45)",
+            border: "none",
+            borderRadius: 40,
+            animation: "hintFloat 3.2s ease-in-out infinite",
+            transition: "opacity 0.7s ease",
+            fontWeight: 700,
+            textIndent: 6,
+            boxShadow: "0 6px 22px rgba(0,0,0,0.4)",
+          }}
+        >
+          Toca para abrir
+        </button>
+      </div>
     </div>
-  );
-}
-
-const PARTICLES = [
-  { left: "8%",  size: 4, dur: 9,  del: 0,   color: "#E8C887" },
-  { left: "22%", size: 3, dur: 12, del: 1.2, color: "rgba(232,200,135,0.6)" },
-  { left: "38%", size: 5, dur: 8,  del: 0.5, color: "#E8C887" },
-  { left: "53%", size: 3, dur: 10, del: 2.1, color: "rgba(232,200,135,0.5)" },
-  { left: "67%", size: 4, dur: 11, del: 0.8, color: "#E8C887" },
-  { left: "81%", size: 3, dur: 9,  del: 1.7, color: "rgba(232,200,135,0.6)" },
-  { left: "15%", size: 5, dur: 13, del: 3,   color: "#E8C887" },
-  { left: "47%", size: 3, dur: 10, del: 2.5, color: "rgba(232,200,135,0.5)" },
-  { left: "72%", size: 4, dur: 12, del: 0.3, color: "#E8C887" },
-  { left: "91%", size: 3, dur: 9,  del: 1.5, color: "rgba(232,200,135,0.6)" },
-];
-
-function Particles() {
-  return (
-    <>
-      {PARTICLES.map((p, i) => (
-        <div key={i} style={{
-          position: "fixed",
-          bottom: -10,
-          left: p.left,
-          width: p.size,
-          height: p.size,
-          borderRadius: "50%",
-          background: p.color,
-          opacity: 0.5,
-          animation: `floatUp ${p.dur}s ${p.del}s linear infinite`,
-          pointerEvents: "none",
-        }} />
-      ))}
-    </>
   );
 }

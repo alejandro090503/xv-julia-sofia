@@ -22,8 +22,13 @@ export default function InvitacionClient() {
   const [splashMounted, setSplashMounted] = useState(true);
   const musicRef = useRef<MusicFabHandle>(null);
 
-  const handleOpen = () => {
+  // Al tocar el sobre (gesto del usuario) → arranca la música
+  const handleStart = () => {
     musicRef.current?.play();
+  };
+
+  // Al terminar el video del sobre → revela la invitación
+  const handleReveal = () => {
     setContentVisible(true);
     setTimeout(() => {
       setSplashMounted(false);
@@ -33,7 +38,7 @@ export default function InvitacionClient() {
 
   return (
     <>
-      {splashMounted && <SplashScreen onOpen={handleOpen} />}
+      {splashMounted && <SplashScreen onStart={handleStart} onOpen={handleReveal} />}
 
       <div
         style={{
