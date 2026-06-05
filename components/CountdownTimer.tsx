@@ -20,14 +20,9 @@ const TOTAL_DAYS = Math.ceil(
   (TARGET.getTime() - new Date("2026-01-01").getTime()) / (1000 * 60 * 60 * 24)
 );
 
-interface RingProps {
-  value: number;
-  label: string;
-  max: number;
-  color: string;
-}
+interface RingProps { value: number; label: string; max: number; }
 
-function Ring({ value, label, max, color }: RingProps) {
+function Ring({ value, label, max }: RingProps) {
   const r = 50;
   const circ = 2 * Math.PI * r;
   const pct = Math.min(value / max, 1);
@@ -36,40 +31,27 @@ function Ring({ value, label, max, color }: RingProps) {
   return (
     <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
       <div style={{ position: "relative", width: 78, height: 78 }}>
-        <svg viewBox="0 0 120 120" style={{ width: "100%", height: "100%", overflow: "visible", filter: "drop-shadow(0 2px 8px rgba(28,64,44,0.06))" }}>
-          <circle cx="60" cy="60" r={r} fill="none" stroke="rgba(28,64,44,0.07)" strokeWidth="3" />
-          <circle cx="60" cy="60" r={r} fill="none" stroke={color} strokeWidth="10" strokeLinecap="round"
-            strokeDasharray={circ} strokeDashoffset={offset}
-            transform="rotate(-90 60 60)"
-            style={{ filter: "blur(7px)", opacity: 0.2 }}
-          />
-          <circle cx="60" cy="60" r={r} fill="none" stroke={color} strokeWidth="3.4" strokeLinecap="round"
-            strokeDasharray={circ} strokeDashoffset={offset}
-            transform="rotate(-90 60 60)"
-            style={{ transition: "stroke-dashoffset 0.5s ease" }}
-          />
+        <svg viewBox="0 0 120 120" style={{ width: "100%", height: "100%", overflow: "visible" }}>
+          <circle cx="60" cy="60" r={r} fill="none" stroke="rgba(232,200,135,0.14)" strokeWidth="3" />
+          <circle cx="60" cy="60" r={r} fill="none" stroke="#C28F45" strokeWidth="9" strokeLinecap="round"
+            strokeDasharray={circ} strokeDashoffset={offset} transform="rotate(-90 60 60)"
+            style={{ filter: "blur(7px)", opacity: 0.25 }} />
+          <circle cx="60" cy="60" r={r} fill="none" stroke="#E8C887" strokeWidth="3.4" strokeLinecap="round"
+            strokeDasharray={circ} strokeDashoffset={offset} transform="rotate(-90 60 60)"
+            style={{ transition: "stroke-dashoffset 0.5s ease" }} />
         </svg>
         <div style={{ position: "absolute", inset: 0, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
           <span style={{
             fontFamily: "var(--font-cormorant), serif",
-            fontSize: 26,
-            fontWeight: 600,
-            color: "#1a1a1a",
-            lineHeight: 1,
-            fontVariantNumeric: "tabular-nums",
-            letterSpacing: 0.6,
+            fontSize: 26, fontWeight: 700, color: "var(--text)",
+            lineHeight: 1, fontVariantNumeric: "tabular-nums", letterSpacing: 0.6,
           }}>
             {String(value).padStart(2, "0")}
           </span>
           <span style={{
             fontFamily: "var(--font-cormorant), serif",
-            fontStyle: "italic",
-            fontSize: 9,
-            letterSpacing: "1.6px",
-            textTransform: "uppercase",
-            color: "#1c402c",
-            marginTop: 2,
-            opacity: 0.78,
+            fontStyle: "italic", fontSize: 9, letterSpacing: "1.6px",
+            textTransform: "uppercase", color: "#E8C887", marginTop: 2, opacity: 0.85,
           }}>
             {label}
           </span>
@@ -91,47 +73,35 @@ export default function CountdownTimer() {
     <section style={{ padding: "64px 26px" }}>
       <h2 style={{
         fontFamily: "var(--font-great-vibes), cursive",
-        fontSize: 50,
-        textAlign: "center",
-        lineHeight: 1.1,
-        marginBottom: 30,
-        color: "#1c402c",
+        fontSize: 50, textAlign: "center", lineHeight: 1.1, marginBottom: 30,
+        background: "linear-gradient(135deg,#C28F45 0%,#E8C887 50%,#C28F45 100%)",
+        WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text",
       }}>
-        Cuenta Regresiva
+        Faltan
       </h2>
 
       <div style={{
-        background: "linear-gradient(145deg, rgba(255,255,255,0.82), rgba(247,244,239,0.95))",
-        backdropFilter: "blur(24px)",
-        WebkitBackdropFilter: "blur(24px)",
-        border: "1px solid rgba(28,64,44,0.10)",
-        borderRadius: 28,
-        padding: "40px 20px 36px",
-        boxShadow: "0 12px 48px rgba(28,64,44,0.06)",
-        position: "relative",
-        overflow: "hidden",
+        background: "rgba(15,38,24,0.45)",
+        backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)",
+        border: "1px solid rgba(232,200,135,0.22)",
+        borderRadius: 28, padding: "40px 20px 36px",
+        position: "relative", overflow: "hidden",
       }}>
         <div style={{ position: "absolute", top: -1, left: "15%", right: "15%", height: 1.5,
-          background: "linear-gradient(90deg,transparent,#1c402c 25%,#D4C5B2 50%,#1c402c 75%,transparent)",
-        }} />
+          background: "linear-gradient(90deg,transparent,#C28F45 30%,#E8C887 50%,#C28F45 70%,transparent)" }} />
 
         <div style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: "8px", maxWidth: 380, margin: "0 auto", justifyItems: "center" }}>
-          <Ring value={time.days} label="Días" max={TOTAL_DAYS} color="#1c402c" />
-          <Ring value={time.hours} label="Horas" max={24} color="#2d5a3f" />
-          <Ring value={time.minutes} label="Minutos" max={60} color="#D4C5B2" />
-          <Ring value={time.seconds} label="Segundos" max={60} color="#b8a48e" />
+          <Ring value={time.days} label="Días" max={TOTAL_DAYS} />
+          <Ring value={time.hours} label="Horas" max={24} />
+          <Ring value={time.minutes} label="Minutos" max={60} />
+          <Ring value={time.seconds} label="Segundos" max={60} />
         </div>
 
-        <div style={{ textAlign: "center", marginTop: 28, paddingTop: 20, borderTop: "1px solid rgba(28,64,44,0.08)" }}>
+        <div style={{ textAlign: "center", marginTop: 28, paddingTop: 20, borderTop: "1px solid rgba(232,200,135,0.14)" }}>
           <p style={{
             fontFamily: "var(--font-cormorant), serif",
-            fontStyle: "italic",
-            fontSize: 17,
-            color: "#1a1a1a",
-            opacity: 0.60,
-            letterSpacing: 1,
-            lineHeight: 1.6,
-            fontWeight: 500,
+            fontStyle: "italic", fontSize: 17, color: "var(--text-soft)",
+            letterSpacing: 1, lineHeight: 1.6, fontWeight: 600,
           }}>
             Cada segundo más cerca de este día especial
           </p>

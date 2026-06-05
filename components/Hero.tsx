@@ -1,35 +1,38 @@
 "use client";
 import { useEffect, useRef } from "react";
+import { PHOTOS } from "./photos";
 
 const PARTICLES = [
-  { left: "7%",  size: 4, dur: 9,  del: 0,   color: "#D4C5B2" },
-  { left: "21%", size: 3, dur: 12, del: 1.4, color: "rgba(212,197,178,0.5)" },
-  { left: "36%", size: 5, dur: 8,  del: 0.6, color: "#D4C5B2" },
-  { left: "54%", size: 3, dur: 10, del: 2.2, color: "rgba(212,197,178,0.5)" },
-  { left: "69%", size: 4, dur: 11, del: 0.9, color: "#D4C5B2" },
-  { left: "84%", size: 3, dur: 9,  del: 1.8, color: "rgba(212,197,178,0.5)" },
-  { left: "13%", size: 5, dur: 13, del: 3.1, color: "#D4C5B2" },
-  { left: "47%", size: 3, dur: 10, del: 2.7, color: "rgba(212,197,178,0.6)" },
-  { left: "75%", size: 4, dur: 12, del: 0.4, color: "#D4C5B2" },
-  { left: "91%", size: 3, dur: 8,  del: 1.6, color: "rgba(212,197,178,0.5)" },
+  { left: "7%",  size: 4, dur: 9,  del: 0,   color: "#E8C887" },
+  { left: "21%", size: 3, dur: 12, del: 1.4, color: "rgba(232,200,135,0.5)" },
+  { left: "36%", size: 5, dur: 8,  del: 0.6, color: "#E8C887" },
+  { left: "54%", size: 3, dur: 10, del: 2.2, color: "rgba(232,200,135,0.5)" },
+  { left: "69%", size: 4, dur: 11, del: 0.9, color: "#E8C887" },
+  { left: "84%", size: 3, dur: 9,  del: 1.8, color: "rgba(232,200,135,0.5)" },
+  { left: "13%", size: 5, dur: 13, del: 3.1, color: "#E8C887" },
+  { left: "47%", size: 3, dur: 10, del: 2.7, color: "rgba(232,200,135,0.6)" },
+  { left: "75%", size: 4, dur: 12, del: 0.4, color: "#E8C887" },
+  { left: "91%", size: 3, dur: 8,  del: 1.6, color: "rgba(232,200,135,0.5)" },
 ];
+
+const GOLD_TEXT = "linear-gradient(135deg,#C28F45 0%,#E8C887 48%,#C28F45 100%)";
 
 function OrnamentBar() {
   return (
     <div style={{ display: "flex", alignItems: "center", gap: 8, width: "100%", padding: "0 10px" }}>
-      <div style={{ flex: 1, height: 0.5, background: "linear-gradient(90deg, transparent, rgba(212,197,178,0.55))" }} />
+      <div style={{ flex: 1, height: 0.5, background: "linear-gradient(90deg, transparent, rgba(232,200,135,0.6))" }} />
       <svg width="5" height="5" viewBox="0 0 5 5">
-        <rect width="5" height="5" fill="#D4C5B2" transform="rotate(45 2.5 2.5)" opacity="0.70" />
+        <rect width="5" height="5" fill="#E8C887" transform="rotate(45 2.5 2.5)" opacity="0.75" />
       </svg>
       <svg width="11" height="11" viewBox="0 0 11 11">
-        <rect x="1.5" y="1.5" width="8" height="8" fill="#D4C5B2" transform="rotate(45 5.5 5.5)" opacity="0.85" />
-        <rect x="3.5" y="3.5" width="4" height="4" fill="#1c402c" transform="rotate(45 5.5 5.5)" />
-        <rect x="4.5" y="4.5" width="2" height="2" fill="#D4C5B2" transform="rotate(45 5.5 5.5)" opacity="0.80" />
+        <rect x="1.5" y="1.5" width="8" height="8" fill="#E8C887" transform="rotate(45 5.5 5.5)" opacity="0.9" />
+        <rect x="3.5" y="3.5" width="4" height="4" fill="#0f2618" transform="rotate(45 5.5 5.5)" />
+        <rect x="4.5" y="4.5" width="2" height="2" fill="#E8C887" transform="rotate(45 5.5 5.5)" opacity="0.85" />
       </svg>
       <svg width="5" height="5" viewBox="0 0 5 5">
-        <rect width="5" height="5" fill="#D4C5B2" transform="rotate(45 2.5 2.5)" opacity="0.70" />
+        <rect width="5" height="5" fill="#E8C887" transform="rotate(45 2.5 2.5)" opacity="0.75" />
       </svg>
-      <div style={{ flex: 1, height: 0.5, background: "linear-gradient(90deg, rgba(212,197,178,0.55), transparent)" }} />
+      <div style={{ flex: 1, height: 0.5, background: "linear-gradient(90deg, rgba(232,200,135,0.6), transparent)" }} />
     </div>
   );
 }
@@ -53,6 +56,8 @@ export default function Hero() {
     return () => timers.forEach(clearTimeout);
   }, []);
 
+  const hasPhoto = !!PHOTOS.hero;
+
   return (
     <section
       style={{
@@ -68,9 +73,22 @@ export default function Hero() {
         padding: "62px 0 48px",
       }}
     >
+      {/* Foto de fondo (Foto 1) */}
+      {hasPhoto && (
+        <div style={{
+          position: "absolute", inset: 0,
+          backgroundImage: `url("${PHOTOS.hero}")`,
+          backgroundSize: "cover",
+          backgroundPosition: "center top",
+          pointerEvents: "none",
+        }} />
+      )}
+      {/* Overlay verde para legibilidad del texto */}
       <div style={{
         position: "absolute", inset: 0,
-        background: "radial-gradient(ellipse 70% 50% at 50% 42%, rgba(212,197,178,0.10) 0%, transparent 70%)",
+        background: hasPhoto
+          ? "linear-gradient(180deg, rgba(15,38,24,0.55) 0%, rgba(15,38,24,0.30) 38%, rgba(15,38,24,0.72) 100%)"
+          : "radial-gradient(ellipse 70% 50% at 50% 42%, rgba(232,200,135,0.10) 0%, transparent 70%)",
         pointerEvents: "none",
       }} />
 
@@ -90,17 +108,19 @@ export default function Hero() {
       <p
         ref={messageRef}
         style={{
+          position: "relative",
           maxWidth: 360,
           padding: "0 28px 24px",
           margin: 0,
           textAlign: "center",
           fontFamily: "var(--font-cormorant), serif",
           fontStyle: "italic",
-          fontWeight: 500,
+          fontWeight: 600,
           fontSize: 18,
           lineHeight: 1.72,
           letterSpacing: 0.5,
-          color: "rgba(212,197,178,0.85)",
+          color: "#f3efe6",
+          textShadow: hasPhoto ? "0 1px 8px rgba(0,0,0,0.55)" : "none",
           opacity: 0,
           transform: "translateY(14px)",
           transition: "opacity 0.95s ease, transform 0.95s ease",
@@ -109,15 +129,18 @@ export default function Hero() {
         Hoy comienza una nueva etapa llena de sueños, ilusiones y momentos que guardaré por siempre en mi corazón.
       </p>
 
-      <div style={{ width: "100%", textAlign: "center", overflow: "visible", padding: "0 0 4px" }}>
+      <div style={{ position: "relative", width: "100%", textAlign: "center", overflow: "visible", padding: "0 0 4px" }}>
         <h1
           ref={nameRef}
           style={{
             fontFamily: "var(--font-great-vibes), cursive",
             fontSize: "min(20vw, 100px)",
             lineHeight: 1.2,
-            color: "#D4C5B2",
-            textShadow: "0 3px 22px rgba(212,197,178,0.30)",
+            background: GOLD_TEXT,
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+            backgroundClip: "text",
+            filter: "drop-shadow(0 3px 18px rgba(0,0,0,0.45))",
             margin: 0,
             padding: "4px 28px 12px 22px",
             opacity: 0,
@@ -131,20 +154,20 @@ export default function Hero() {
         </h1>
       </div>
 
-      <div style={{ width: "100%", maxWidth: 360, padding: "0 24px" }}>
+      <div style={{ position: "relative", width: "100%", maxWidth: 360, padding: "0 24px" }}>
         <div style={{
           position: "relative",
-          border: "1px solid rgba(212,197,178,0.35)",
+          border: "1px solid rgba(232,200,135,0.45)",
           borderRadius: 2,
-          background: "rgba(28,64,44,0.40)",
-          backdropFilter: "blur(6px)",
-          WebkitBackdropFilter: "blur(6px)",
+          background: "rgba(15,38,24,0.42)",
+          backdropFilter: "blur(8px)",
+          WebkitBackdropFilter: "blur(8px)",
           padding: "26px 26px 24px",
           textAlign: "center",
         }}>
           <div style={{
             position: "absolute", inset: 5,
-            border: "0.5px solid rgba(212,197,178,0.20)",
+            border: "0.5px solid rgba(232,200,135,0.25)",
             borderRadius: 1,
             pointerEvents: "none",
           }} />
@@ -167,28 +190,30 @@ export default function Hero() {
               letterSpacing: 22,
               lineHeight: 1,
               textIndent: 22,
-              color: "#D4C5B2",
-              textShadow: "0 2px 12px rgba(212,197,178,0.20)",
+              background: GOLD_TEXT,
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+              backgroundClip: "text",
             }}>
               XV
             </div>
 
             <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 8, margin: "8px 0 10px" }}>
-              <div style={{ width: 22, height: 0.5, background: "rgba(212,197,178,0.45)" }} />
+              <div style={{ width: 22, height: 0.5, background: "rgba(232,200,135,0.5)" }} />
               <svg width="5" height="5" viewBox="0 0 5 5">
-                <rect width="5" height="5" fill="#D4C5B2" transform="rotate(45 2.5 2.5)" opacity="0.80" />
+                <rect width="5" height="5" fill="#E8C887" transform="rotate(45 2.5 2.5)" opacity="0.85" />
               </svg>
-              <div style={{ width: 22, height: 0.5, background: "rgba(212,197,178,0.45)" }} />
+              <div style={{ width: 22, height: 0.5, background: "rgba(232,200,135,0.5)" }} />
             </div>
 
             <div style={{
               fontFamily: "var(--font-cormorant), serif",
               fontStyle: "italic",
-              fontWeight: 500,
+              fontWeight: 600,
               fontSize: "clamp(20px, 5.5vw, 26px)",
               letterSpacing: 11,
               textTransform: "uppercase",
-              color: "#D4C5B2",
+              color: "#E8C887",
               textIndent: 11,
             }}>
               Años
@@ -210,14 +235,15 @@ export default function Hero() {
             <span style={{
               display: "inline-block",
               padding: "5px 22px",
-              border: "0.6px solid rgba(212,197,178,0.35)",
+              border: "0.6px solid rgba(232,200,135,0.4)",
               borderRadius: 40,
               fontFamily: "var(--font-cormorant), serif",
               fontStyle: "italic",
+              fontWeight: 600,
               fontSize: 15,
               letterSpacing: 4,
-              color: "#D4C5B2",
-              background: "rgba(28,64,44,0.30)",
+              color: "#f3efe6",
+              background: "rgba(15,38,24,0.35)",
             }}>
               27 · Junio · 2026
             </span>
@@ -232,7 +258,7 @@ export default function Hero() {
         transform: "translateX(-50%)",
         animation: "hintFloat 3s ease-in-out infinite",
       }}>
-        <div style={{ width: 1, height: 28, background: "linear-gradient(to bottom, transparent, rgba(212,197,178,0.55))" }} />
+        <div style={{ width: 1, height: 28, background: "linear-gradient(to bottom, transparent, rgba(232,200,135,0.6))" }} />
       </div>
     </section>
   );

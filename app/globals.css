@@ -1,16 +1,16 @@
 @import "tailwindcss";
 
 :root {
-  --bg: #f7f4ef;
-  --accent: #1c402c;
-  --dark: #0f2618;
-  --text: #1a1a1a;
-  --surface: rgba(28,64,44,0.06);
-  --card: rgba(255,255,255,0.90);
-  --gold: #D4C5B2;
-  --gold-dark: #b8a48e;
-  --cream: #f7f4ef;
+  --bg: #143524;
+  --green: #1c402c;
+  --green-deep: #0f2618;
   --green-light: #2d5a3f;
+  --text: #f3efe6;
+  --text-soft: rgba(243,239,230,0.78);
+  --gold: #C28F45;
+  --gold-light: #E8C887;
+  --gold-deep: #9c6f2e;
+  --suggest: #D4C5B2;
 }
 
 * {
@@ -29,7 +29,7 @@ body {
   font-weight: 500;
   font-size: 17px;
   color: var(--text);
-  background: var(--bg);
+  background: var(--green-deep);
   line-height: 1.6;
   overflow-x: hidden;
 }
@@ -59,9 +59,9 @@ body {
   50%       { transform: scale(1.18); opacity: 0.06; }
 }
 
-@keyframes sealFloat {
-  0%, 100% { transform: translateY(0) rotate(0deg); }
-  50%      { transform: translateY(-4px) rotate(2deg); }
+@keyframes envBreathe {
+  0%, 100% { transform: scale(1); }
+  50%      { transform: scale(1.03); }
 }
 
 .rv {

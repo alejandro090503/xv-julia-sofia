@@ -7,7 +7,6 @@ const GCAL_URL = (() => {
     "Celebración de XV Años de Julia Sofía Martínez Chávez · Morelia, Mich."
   );
   const location = encodeURIComponent("Morelia, Michoacán, México");
-  // 2026-06-27 18:00 CST → UTC = 2026-06-28T00:00:00Z
   const dates = "20260628T000000Z/20260628T080000Z";
   return `${base}&text=${title}&dates=${dates}&details=${details}&location=${location}`;
 })();
@@ -17,59 +16,38 @@ export default function CalendarioBtn() {
     <section style={{ padding: "40px 26px 64px", textAlign: "center" }}>
       <p style={{
         fontFamily: "var(--font-cormorant), serif",
-        fontStyle: "italic",
-        fontSize: 14,
-        letterSpacing: 5,
-        textTransform: "uppercase",
-        color: "#1c402c",
-        marginBottom: 8,
-        opacity: 0.75,
-        fontWeight: 600,
+        fontStyle: "italic", fontSize: 14, letterSpacing: 5,
+        textTransform: "uppercase", color: "#E8C887",
+        marginBottom: 8, opacity: 0.85, fontWeight: 600,
       }}>
         No lo olvides
       </p>
       <h2 style={{
         fontFamily: "var(--font-great-vibes), cursive",
-        fontSize: 48,
-        lineHeight: 1.25,
-        marginBottom: 16,
-        padding: "4px 20px 8px",
-        color: "#1c402c",
-        overflow: "visible",
+        fontSize: 48, lineHeight: 1.25, marginBottom: 16, padding: "4px 20px 8px",
+        background: "linear-gradient(135deg,#C28F45 0%,#E8C887 50%,#C28F45 100%)",
+        WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text",
         display: "inline-block",
       }}>
         Guárdalo
       </h2>
       <p style={{
         fontFamily: "var(--font-cormorant), serif",
-        fontStyle: "italic",
-        fontWeight: 500,
-        fontSize: 17,
-        color: "#1a1a1a",
-        opacity: 0.60,
-        marginBottom: 20,
+        fontStyle: "italic", fontWeight: 600, fontSize: 17,
+        color: "var(--text-soft)", marginBottom: 20,
       }}>
         Agrega el evento a tu calendario
       </p>
-      <a
-        href={GCAL_URL}
-        target="_blank"
-        rel="noopener noreferrer"
+      <a href={GCAL_URL} target="_blank" rel="noopener noreferrer"
         style={{
-          display: "inline-block",
-          padding: "14px 32px",
-          background: "linear-gradient(135deg, #1c402c, #0f2618)",
-          color: "#FFFFFF",
-          borderRadius: 30,
+          display: "inline-block", padding: "14px 32px",
+          background: "linear-gradient(135deg,#C28F45,#9c6f2e)",
+          color: "#0f2618", borderRadius: 30,
           fontFamily: "var(--font-lato), sans-serif",
-          fontSize: 14,
-          fontWeight: 700,
-          textTransform: "uppercase",
-          letterSpacing: 3,
-          textDecoration: "none",
-          boxShadow: "0 4px 16px rgba(28,64,44,0.25)",
-        }}
-      >
+          fontSize: 14, fontWeight: 800, textTransform: "uppercase",
+          letterSpacing: 3, textDecoration: "none",
+          boxShadow: "0 4px 16px rgba(0,0,0,0.3)",
+        }}>
         Añadir a Google Calendar
       </a>
     </section>

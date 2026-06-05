@@ -1,18 +1,35 @@
 "use client";
+import { useState } from "react";
 
 export default function MesaRegalos() {
+  const [open, setOpen] = useState(false);
+
   return (
-    <section style={{ padding: "64px 26px" }}>
+    <section style={{ padding: "64px 26px", textAlign: "center" }}>
+      <p style={{
+        fontFamily: "var(--font-cormorant), serif",
+        fontStyle: "italic",
+        fontWeight: 600,
+        fontSize: 14,
+        letterSpacing: 5,
+        textTransform: "uppercase",
+        color: "#E8C887",
+        marginBottom: 8,
+        opacity: 0.9,
+      }}>
+        Obsequios
+      </p>
       <h2 style={{
         fontFamily: "var(--font-great-vibes), cursive",
         fontSize: 50,
-        textAlign: "center",
-        lineHeight: 1.25,
-        marginBottom: 16,
-        padding: "6px 24px 10px",
-        color: "#1c402c",
-        overflow: "visible",
-        display: "block",
+        lineHeight: 1.2,
+        marginBottom: 14,
+        padding: "4px 20px 8px",
+        background: "linear-gradient(135deg,#C28F45 0%,#E8C887 50%,#C28F45 100%)",
+        WebkitBackgroundClip: "text",
+        WebkitTextFillColor: "transparent",
+        backgroundClip: "text",
+        display: "inline-block",
       }}>
         Mesa de Regalos
       </h2>
@@ -21,80 +38,131 @@ export default function MesaRegalos() {
         fontFamily: "var(--font-cormorant), serif",
         fontStyle: "italic",
         fontWeight: 600,
-        fontSize: 19,
-        color: "#1c402c",
+        fontSize: 18,
+        color: "var(--text-soft)",
         lineHeight: 1.65,
         letterSpacing: 0.4,
-        textAlign: "center",
         maxWidth: 360,
-        margin: "0 auto 30px",
+        margin: "0 auto 44px",
       }}>
-        Tu cariño y presencia son el mejor regalo que puedo recibir. Si deseas obsequiarme algo, aquí te dejo una sugerencia.
+        Tu cariño y presencia son el mejor regalo que puedo recibir. Si deseas obsequiarme algo, será con mucho gusto recibido.
       </p>
 
-      <div style={{ display: "flex", flexDirection: "column", gap: 18, alignItems: "center" }}>
-        {/* Lluvia de sobres */}
-        <div style={{
-          width: "100%",
-          textAlign: "center",
-          padding: "28px 24px",
-          background: "linear-gradient(145deg, rgba(28,64,44,0.04), rgba(212,197,178,0.12))",
-          borderRadius: 26,
-          border: "1px solid rgba(28,64,44,0.14)",
-          boxShadow: "0 6px 28px rgba(28,64,44,0.06)",
-          position: "relative",
-          overflow: "hidden",
-        }}>
+      {/* Sobre interactivo */}
+      <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 0 }}>
+        <button
+          onClick={() => setOpen(o => !o)}
+          aria-label="Sobre — toca para abrir"
+          aria-expanded={open}
+          style={{
+            display: "flex", flexDirection: "column", alignItems: "center",
+            cursor: "pointer", border: "none", background: "none", padding: 0,
+            WebkitTapHighlightColor: "transparent", outline: "none",
+          }}
+        >
           <div style={{
-            position: "absolute", top: 0, left: "10%", right: "10%", height: 2,
-            background: "linear-gradient(90deg,transparent,#1c402c 30%,#D4C5B2 70%,transparent)",
-            opacity: 0.40,
-          }} />
-
-          <div style={{
-            width: 72, height: 72, borderRadius: "50%",
-            margin: "0 auto 16px",
-            background: "linear-gradient(135deg, rgba(28,64,44,0.12), rgba(212,197,178,0.25))",
-            border: "1.5px solid rgba(28,64,44,0.22)",
-            display: "flex", alignItems: "center", justifyContent: "center",
-            boxShadow: "0 4px 18px rgba(28,64,44,0.10)",
+            perspective: 700,
+            position: "relative",
+            width: 260,
+            height: 200,
+            animation: "envBreathe 3.6s ease-in-out infinite",
           }}>
-            <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#1c402c" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-              <rect x="2" y="5" width="20" height="14" rx="2" />
-              <polyline points="2,7 12,14 22,7" />
-              <path d="M2 19 L9 13" opacity="0.6" />
-              <path d="M22 19 L15 13" opacity="0.6" />
+            {/* Cuerpo del sobre */}
+            <svg viewBox="0 0 260 200" preserveAspectRatio="none" style={{ width: "100%", height: "100%" }} aria-hidden="true">
+              <defs>
+                <linearGradient id="js-env-fill" x1="0" y1="1" x2="1" y2="0">
+                  <stop offset="0%" stopColor="#1c402c" />
+                  <stop offset="100%" stopColor="#2d5a3f" />
+                </linearGradient>
+              </defs>
+              <rect x="18" y="52" width="224" height="132" rx="10" fill="url(#js-env-fill)" stroke="rgba(232,200,135,0.6)" strokeWidth="1.4" />
+              <path d="M18 184 L130 110 L242 184" stroke="rgba(232,200,135,0.4)" strokeWidth="1" fill="none" />
+              {/* Líneas decorativas (lluvia) */}
+              <line x1="90"  y1="30" x2="90"  y2="20" stroke="#E8C887" strokeWidth="1.3" strokeLinecap="round" opacity=".55" />
+              <line x1="130" y1="24" x2="130" y2="14" stroke="#E8C887" strokeWidth="1.3" strokeLinecap="round" opacity=".7" />
+              <line x1="170" y1="30" x2="170" y2="20" stroke="#E8C887" strokeWidth="1.3" strokeLinecap="round" opacity=".55" />
+              <line x1="110" y1="18" x2="110" y2="10" stroke="#C28F45" strokeWidth="1"   strokeLinecap="round" opacity=".5" />
+              <line x1="150" y1="18" x2="150" y2="10" stroke="#C28F45" strokeWidth="1"   strokeLinecap="round" opacity=".5" />
+              {/* Sello J&S */}
+              <circle cx="130" cy="118" r="16" fill="rgba(232,200,135,0.16)" stroke="rgba(232,200,135,0.6)" strokeWidth="1" />
+              <text x="130" y="123" textAnchor="middle" fontFamily="Georgia,serif" fontSize="11" fill="#E8C887" opacity=".95">JS</text>
             </svg>
+
+            {/* Solapa animable */}
+            <div style={{
+              position: "absolute",
+              top: 46, left: 18,
+              width: 224, height: 86,
+              transformOrigin: "top center",
+              transformStyle: "preserve-3d",
+              backfaceVisibility: "hidden",
+              WebkitBackfaceVisibility: "hidden",
+              transition: "transform .65s cubic-bezier(.4,0,.2,1)",
+              transform: open ? "rotateX(-175deg)" : "rotateX(0deg)",
+              pointerEvents: "none",
+              zIndex: 2,
+            }}>
+              <svg viewBox="0 0 224 86" preserveAspectRatio="none" style={{ width: "100%", height: "100%" }}>
+                <defs>
+                  <linearGradient id="js-flap-fill" x1="0" y1="1" x2="1" y2="0">
+                    <stop offset="0%" stopColor="#2d5a3f" />
+                    <stop offset="100%" stopColor="#1c402c" />
+                  </linearGradient>
+                </defs>
+                <path d="M0 0 L112 86 L224 0 Z" fill="url(#js-flap-fill)" stroke="rgba(232,200,135,0.6)" strokeWidth="1.5" strokeLinejoin="round" />
+              </svg>
+            </div>
           </div>
 
-          <h3 style={{
-            fontFamily: "var(--font-great-vibes), cursive",
-            fontSize: 38,
-            color: "#1c402c",
-            marginBottom: 6,
-            lineHeight: 1.1,
-          }}>
-            Lluvia de Sobres
-          </h3>
-
+          {/* Contenido revelado */}
           <div style={{
-            width: 42, height: 1,
-            margin: "10px auto 12px",
-            background: "linear-gradient(90deg,transparent,rgba(28,64,44,0.40),transparent)",
-          }} />
-
-          <p style={{
-            fontFamily: "var(--font-cormorant), serif",
-            fontStyle: "italic",
-            fontWeight: 600,
-            fontSize: 18,
-            color: "#1c402c",
-            lineHeight: 1.55,
-            letterSpacing: 0.4,
+            overflow: "hidden",
+            maxHeight: open ? 240 : 0,
+            opacity: open ? 1 : 0,
+            transition: "max-height .55s .3s ease, opacity .4s .38s ease",
+            display: "flex", flexDirection: "column", alignItems: "center", gap: 8,
+            padding: "0 20px",
+            pointerEvents: open ? "auto" : "none",
           }}>
-            Un sobre con tu bendición llenará mi corazón de alegría.
-          </p>
-        </div>
+            <svg width="40" height="40" viewBox="0 0 52 52" fill="none" stroke="#E8C887" strokeWidth="1.5" style={{ marginTop: 12 }} aria-hidden="true">
+              <rect x="8" y="22" width="36" height="24" rx="5" />
+              <path d="M8 30 Q26 38 44 30" />
+              <rect x="18" y="8" width="16" height="16" rx="2" />
+              <path d="M18 8 Q26 3 34 8" />
+            </svg>
+            <p style={{
+              fontFamily: "var(--font-great-vibes), cursive",
+              fontSize: 34,
+              color: "#E8C887",
+              lineHeight: 1.2,
+            }}>
+              Lluvia de Sobres
+            </p>
+            <p style={{
+              fontFamily: "var(--font-cormorant), serif",
+              fontSize: 16,
+              fontStyle: "italic",
+              fontWeight: 600,
+              color: "var(--text-soft)",
+              lineHeight: 1.7,
+            }}>
+              Un sobre con tu bendición llenará mi corazón de alegría.
+            </p>
+          </div>
+        </button>
+
+        <p style={{
+          fontFamily: "var(--font-lato), sans-serif",
+          fontSize: 10,
+          letterSpacing: 3,
+          textTransform: "uppercase",
+          color: "#E8C887",
+          opacity: open ? 0 : 0.7,
+          transition: "opacity .3s",
+          marginTop: 8,
+        }}>
+          Toca el sobre
+        </p>
       </div>
     </section>
   );

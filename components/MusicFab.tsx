@@ -46,7 +46,7 @@ const MusicFab = forwardRef<MusicFabHandle>((_, ref) => {
     }}>
       <div style={{
         position: "absolute", inset: -8, borderRadius: "50%",
-        border: "1.5px solid rgba(212,197,178,0.30)",
+        border: "1.5px solid rgba(232,200,135,0.30)",
         animation: playing ? "vinylPulse 2.2s ease-in-out infinite" : "none",
         pointerEvents: "none",
       }} />
@@ -62,18 +62,18 @@ const MusicFab = forwardRef<MusicFabHandle>((_, ref) => {
         <div style={{
           position: "absolute", top: 0, right: 0, width: 8, height: 8,
           borderRadius: "50%",
-          background: "linear-gradient(135deg, #D4C5B2, #b8a48e)",
+          background: "linear-gradient(135deg, #E8C887, #C28F45)",
           boxShadow: "0 1px 5px rgba(0,0,0,0.55)",
         }} />
         <div style={{
           position: "absolute", top: 5, right: 3, width: 2, height: 22,
-          background: "linear-gradient(to bottom, #D4C5B2 0%, rgba(212,197,178,0.50) 100%)",
+          background: "linear-gradient(to bottom, #E8C887 0%, rgba(212,197,178,0.50) 100%)",
           borderRadius: 2, transform: "rotate(18deg)", transformOrigin: "top center",
         }} />
         <div style={{
           position: "absolute", bottom: 0, left: 3, width: 6, height: 5,
           borderRadius: "0 0 2px 2px",
-          background: "#D4C5B2",
+          background: "#E8C887",
           boxShadow: "0 1px 3px rgba(0,0,0,0.50)",
         }} />
       </div>
@@ -86,7 +86,7 @@ const MusicFab = forwardRef<MusicFabHandle>((_, ref) => {
           borderRadius: "50%", border: "none", cursor: "pointer",
           padding: 0, outline: "none", background: "transparent",
           overflow: "hidden",
-          boxShadow: "0 4px 24px rgba(28,64,44,0.45), 0 0 0 1.5px rgba(212,197,178,0.26)",
+          boxShadow: "0 4px 24px rgba(28,64,44,0.45), 0 0 0 1.5px rgba(232,200,135,0.26)",
         }}
       >
         <div style={{
@@ -94,7 +94,7 @@ const MusicFab = forwardRef<MusicFabHandle>((_, ref) => {
           animation: playing ? "vinylSpin 2s linear infinite" : "none",
           background: `
             radial-gradient(circle, #0a1a10 4%, transparent 4.5%),
-            radial-gradient(circle, #D4C5B2 0%, #b8a48e 17%, #8e7f70 19%, transparent 19.5%),
+            radial-gradient(circle, #E8C887 0%, #C28F45 17%, #9c6f2e 19%, transparent 19.5%),
             repeating-radial-gradient(circle,
               transparent 21%, rgba(255,255,255,0.04) 21.7%, transparent 22.3%,
               transparent 27%, rgba(255,255,255,0.04) 27.7%, transparent 28.3%,

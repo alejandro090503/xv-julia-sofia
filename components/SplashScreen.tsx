@@ -66,7 +66,7 @@ export default function SplashScreen({ onOpen }: Props) {
 
       <div style={{
         position: "absolute", inset: 0,
-        background: "radial-gradient(ellipse 60% 45% at 50% 40%, rgba(212,197,178,0.12) 0%, transparent 70%)",
+        background: "radial-gradient(ellipse 60% 45% at 50% 40%, rgba(232,200,135,0.14) 0%, transparent 70%)",
         pointerEvents: "none",
       }} />
 
@@ -78,8 +78,8 @@ export default function SplashScreen({ onOpen }: Props) {
           fontFamily: "var(--font-great-vibes), cursive",
           fontSize: "clamp(48px, 14vw, 72px)",
           lineHeight: 1.15,
-          color: "#D4C5B2",
-          textShadow: "0 2px 20px rgba(212,197,178,0.30)",
+          color: "#E8C887",
+          textShadow: "0 2px 20px rgba(232,200,135,0.32)",
           opacity: 0,
           transform: "translateY(16px)",
           transition: "opacity 0.8s ease, transform 0.8s ease",
@@ -95,8 +95,8 @@ export default function SplashScreen({ onOpen }: Props) {
           fontFamily: "var(--font-great-vibes), cursive",
           fontSize: "clamp(56px, 18vw, 96px)",
           lineHeight: 1.15,
-          color: "#D4C5B2",
-          textShadow: "0 3px 24px rgba(212,197,178,0.35)",
+          color: "#E8C887",
+          textShadow: "0 3px 24px rgba(232,200,135,0.35)",
           marginTop: 4,
           opacity: 0,
           transform: "translateY(16px)",
@@ -112,7 +112,7 @@ export default function SplashScreen({ onOpen }: Props) {
         width: 100,
         height: 1,
         margin: "28px auto 10px",
-        background: "linear-gradient(90deg, transparent, #D4C5B2, transparent)",
+        background: "linear-gradient(90deg, transparent, #E8C887, transparent)",
         opacity: 0.45,
       }} />
 
@@ -120,7 +120,7 @@ export default function SplashScreen({ onOpen }: Props) {
         fontFamily: "var(--font-cormorant), serif",
         fontSize: 16,
         letterSpacing: 3,
-        color: "rgba(212,197,178,0.75)",
+        color: "rgba(232,200,135,0.80)",
         textAlign: "center",
         marginBottom: 32,
         fontWeight: 500,
@@ -135,13 +135,13 @@ export default function SplashScreen({ onOpen }: Props) {
           fontSize: 13,
           letterSpacing: 6,
           textTransform: "uppercase",
-          color: "#D4C5B2",
+          color: "#E8C887",
           opacity: 0,
           cursor: "pointer",
           whiteSpace: "nowrap",
           padding: "14px 40px",
-          background: "rgba(212,197,178,0.10)",
-          border: "1px solid rgba(212,197,178,0.30)",
+          background: "rgba(232,200,135,0.12)",
+          border: "1px solid rgba(232,200,135,0.32)",
           borderRadius: 40,
           backdropFilter: "blur(12px)",
           WebkitBackdropFilter: "blur(12px)",
@@ -158,16 +158,16 @@ export default function SplashScreen({ onOpen }: Props) {
 }
 
 const PARTICLES = [
-  { left: "8%",  size: 4, dur: 9,  del: 0,   color: "#D4C5B2" },
-  { left: "22%", size: 3, dur: 12, del: 1.2, color: "rgba(212,197,178,0.6)" },
-  { left: "38%", size: 5, dur: 8,  del: 0.5, color: "#D4C5B2" },
-  { left: "53%", size: 3, dur: 10, del: 2.1, color: "rgba(212,197,178,0.5)" },
-  { left: "67%", size: 4, dur: 11, del: 0.8, color: "#D4C5B2" },
-  { left: "81%", size: 3, dur: 9,  del: 1.7, color: "rgba(212,197,178,0.6)" },
-  { left: "15%", size: 5, dur: 13, del: 3,   color: "#D4C5B2" },
-  { left: "47%", size: 3, dur: 10, del: 2.5, color: "rgba(212,197,178,0.5)" },
-  { left: "72%", size: 4, dur: 12, del: 0.3, color: "#D4C5B2" },
-  { left: "91%", size: 3, dur: 9,  del: 1.5, color: "rgba(212,197,178,0.6)" },
+  { left: "8%",  size: 4, dur: 9,  del: 0,   color: "#E8C887" },
+  { left: "22%", size: 3, dur: 12, del: 1.2, color: "rgba(232,200,135,0.6)" },
+  { left: "38%", size: 5, dur: 8,  del: 0.5, color: "#E8C887" },
+  { left: "53%", size: 3, dur: 10, del: 2.1, color: "rgba(232,200,135,0.5)" },
+  { left: "67%", size: 4, dur: 11, del: 0.8, color: "#E8C887" },
+  { left: "81%", size: 3, dur: 9,  del: 1.7, color: "rgba(232,200,135,0.6)" },
+  { left: "15%", size: 5, dur: 13, del: 3,   color: "#E8C887" },
+  { left: "47%", size: 3, dur: 10, del: 2.5, color: "rgba(232,200,135,0.5)" },
+  { left: "72%", size: 4, dur: 12, del: 0.3, color: "#E8C887" },
+  { left: "91%", size: 3, dur: 9,  del: 1.5, color: "rgba(232,200,135,0.6)" },
 ];
 
 function Particles() {

@@ -9,7 +9,9 @@ import CalendarioBtn from "./CalendarioBtn";
 import DressCode from "./DressCode";
 import Familia from "./Familia";
 import MesaRegalos from "./MesaRegalos";
+import PhotoFrame from "./PhotoFrame";
 import RSVPSection from "./RSVPSection";
+import ClosingPhoto from "./ClosingPhoto";
 import Footer from "./Footer";
 import MusicFab, { type MusicFabHandle } from "./MusicFab";
 import ScrollReveal from "./ScrollReveal";
@@ -41,7 +43,7 @@ export default function InvitacionClient() {
           position: "relative",
           overflowX: "clip",
           zIndex: 1,
-          backgroundColor: "#f7f4ef",
+          background: "linear-gradient(180deg, #0f2618 0%, #143524 50%, #0f2618 100%)",
         }}
       >
         <Hero />
@@ -57,19 +59,15 @@ export default function InvitacionClient() {
         <ScrollReveal>
           <div style={{ padding: "32px 26px 10px", textAlign: "center" }}>
             <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 18 }}>
-              <div style={{ flex: 1, maxWidth: 60, height: 1, background: "linear-gradient(to right,transparent,#1c402c)", opacity: 0.3 }} />
+              <div style={{ flex: 1, maxWidth: 60, height: 1, background: "linear-gradient(to right,transparent,#C28F45)", opacity: 0.55 }} />
               <div style={{
                 fontFamily: "var(--font-cormorant), serif",
-                fontWeight: 700,
-                fontSize: 24,
-                letterSpacing: 8,
-                textTransform: "uppercase",
-                color: "#1c402c",
-                textIndent: 8,
+                fontWeight: 700, fontSize: 24, letterSpacing: 8,
+                textTransform: "uppercase", color: "#E8C887", textIndent: 8,
               }}>
                 27 · Junio · 2026
               </div>
-              <div style={{ flex: 1, maxWidth: 60, height: 1, background: "linear-gradient(to left,transparent,#1c402c)", opacity: 0.3 }} />
+              <div style={{ flex: 1, maxWidth: 60, height: 1, background: "linear-gradient(to left,transparent,#C28F45)", opacity: 0.55 }} />
             </div>
           </div>
         </ScrollReveal>
@@ -106,17 +104,19 @@ export default function InvitacionClient() {
           <MesaRegalos />
         </ScrollReveal>
 
+        {/* Foto 2 — marco rasgado */}
         <ScrollReveal>
-          <Ornament />
+          <PhotoFrame />
         </ScrollReveal>
 
         <ScrollReveal>
           <RSVPSection />
         </ScrollReveal>
 
-        <ScrollReveal>
-          <Footer />
-        </ScrollReveal>
+        {/* Foto 3 — cierre (full-bleed) */}
+        <ClosingPhoto />
+
+        <Footer />
       </div>
 
       <MusicFab ref={musicRef} />
