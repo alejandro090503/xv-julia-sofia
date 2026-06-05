@@ -93,7 +93,7 @@ export default function Familia() {
               <circle cx="12" cy="7" r="4" />
             </svg>
           }
-          names={<>Edgar Omar Martínez Bill Ocaña<Amp />Sharazam Lizette Chávez Ceballos</>}
+          names={<>Edgar Omar Martínez Vilicaña<Amp />Sharazam Lizette Chávez Ceballos</>}
         />
         <Block
           rounded="24px"

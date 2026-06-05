@@ -125,12 +125,12 @@ export default function Ubicacion() {
       <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
         <VenueCard
           type="Misa de Acción de Gracias"
-          name="Clz. Fray Antonio de San Miguel 240"
-          address="Centro histórico de Morelia, 58000 Morelia, Mich."
+          name="Rectoría de Nuestra Señora de los Urdiales"
+          address="Jesús Solórzano Dávalos 69, Nueva Valladolid, 58190 Morelia, Mich."
           time="6:00 PM"
-          mapsUrl="https://www.google.com/maps/place/Clz.+Fray+Antonio+de+San+Miguel+240,+Centro+hist%C3%B3rico+de+Morelia,+58000+Morelia,+Mich./@19.7017179,-101.1800216,17z"
-          lat={19.7017179}
-          lng={-101.1800216}
+          mapsUrl="https://maps.app.goo.gl/wTB4MFFk8QEpfW4s6"
+          lat={19.7011781}
+          lng={-101.2104329}
         />
         <VenueCard
           type="Recepción"
