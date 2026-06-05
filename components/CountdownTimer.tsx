@@ -1,62 +1,107 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const TARGET = new Date("2026-06-27T18:00:00-06:00");
 
 function getRemainingTime() {
   const now = new Date();
   const diff = TARGET.getTime() - now.getTime();
-  if (diff <= 0) return { days: 0, hours: 0, minutes: 0, seconds: 0, total: 0 };
+  if (diff <= 0) return { days: "000", hours: "00", minutes: "00", seconds: "00" };
   return {
-    days: Math.floor(diff / (1000 * 60 * 60 * 24)),
-    hours: Math.floor((diff / (1000 * 60 * 60)) % 24),
-    minutes: Math.floor((diff / (1000 * 60)) % 60),
-    seconds: Math.floor((diff / 1000) % 60),
-    total: diff,
+    days: String(Math.floor(diff / 86400000)).padStart(3, "0"),
+    hours: String(Math.floor((diff % 86400000) / 3600000)).padStart(2, "0"),
+    minutes: String(Math.floor((diff % 3600000) / 60000)).padStart(2, "0"),
+    seconds: String(Math.floor((diff % 60000) / 1000)).padStart(2, "0"),
   };
 }
 
-const TOTAL_DAYS = Math.ceil(
-  (TARGET.getTime() - new Date("2026-01-01").getTime()) / (1000 * 60 * 60 * 24)
-);
+/* Tarjeta tipo calendario con flip (la hoja cae hacia atrás al cambiar) */
+function FlipUnit({ value, label }: { value: string; label: string }) {
+  const [display, setDisplay] = useState(value);
+  const [style, setStyle] = useState<React.CSSProperties>({ transform: "rotateX(0deg)" });
+  const prev = useRef(value);
+  const raf = useRef<number | undefined>(undefined);
 
-interface RingProps { value: number; label: string; max: number; }
-
-function Ring({ value, label, max }: RingProps) {
-  const r = 50;
-  const circ = 2 * Math.PI * r;
-  const pct = Math.min(value / max, 1);
-  const offset = circ * (1 - pct);
+  useEffect(() => {
+    if (value === prev.current) return;
+    prev.current = value;
+    // Fase 1: la hoja vieja gira hacia atrás (0 → -90)
+    setStyle({ transform: "rotateX(-90deg)", transition: "transform .26s cubic-bezier(.45,0,.9,.6)" });
+    const t1 = setTimeout(() => {
+      setDisplay(value);
+      // Fase 2: la hoja nueva entra desde +90 → 0
+      setStyle({ transform: "rotateX(90deg)", transition: "none" });
+      raf.current = requestAnimationFrame(() => {
+        raf.current = requestAnimationFrame(() => {
+          setStyle({ transform: "rotateX(0deg)", transition: "transform .38s cubic-bezier(.1,.55,.2,1)" });
+        });
+      });
+    }, 260);
+    return () => { clearTimeout(t1); if (raf.current) cancelAnimationFrame(raf.current); };
+  }, [value]);
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-      <div style={{ position: "relative", width: 78, height: 78 }}>
-        <svg viewBox="0 0 120 120" style={{ width: "100%", height: "100%", overflow: "visible" }}>
-          <circle cx="60" cy="60" r={r} fill="none" stroke="rgba(232,200,135,0.14)" strokeWidth="3" />
-          <circle cx="60" cy="60" r={r} fill="none" stroke="#C28F45" strokeWidth="9" strokeLinecap="round"
-            strokeDasharray={circ} strokeDashoffset={offset} transform="rotate(-90 60 60)"
-            style={{ filter: "blur(7px)", opacity: 0.25 }} />
-          <circle cx="60" cy="60" r={r} fill="none" stroke="#E8C887" strokeWidth="3.4" strokeLinecap="round"
-            strokeDasharray={circ} strokeDashoffset={offset} transform="rotate(-90 60 60)"
-            style={{ transition: "stroke-dashoffset 0.5s ease" }} />
-        </svg>
-        <div style={{ position: "absolute", inset: 0, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
-          <span style={{
-            fontFamily: "var(--font-cormorant), serif",
-            fontSize: 26, fontWeight: 700, color: "var(--text)",
-            lineHeight: 1, fontVariantNumeric: "tabular-nums", letterSpacing: 0.6,
-          }}>
-            {String(value).padStart(2, "0")}
-          </span>
-          <span style={{
-            fontFamily: "var(--font-cormorant), serif",
-            fontStyle: "italic", fontSize: 9, letterSpacing: "1.6px",
-            textTransform: "uppercase", color: "#E8C887", marginTop: 2, opacity: 0.85,
-          }}>
-            {label}
-          </span>
-        </div>
+    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", flex: 1, minWidth: 0 }}>
+      <div style={{
+        position: "relative",
+        width: "100%",
+        aspectRatio: "0.86",
+        borderRadius: 12,
+        background: "linear-gradient(180deg, rgba(22,50,33,0.92) 0%, rgba(15,38,24,0.92) 49.6%, rgba(12,32,20,0.96) 50.4%, rgba(9,26,16,0.96) 100%)",
+        border: "1px solid rgba(232,200,135,0.38)",
+        boxShadow: "0 10px 30px rgba(0,0,0,0.35), inset 0 1px 0 rgba(232,200,135,0.12)",
+        overflow: "hidden",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        perspective: 360,
+      }}>
+        {/* Línea de pliegue central */}
+        <div style={{
+          position: "absolute", top: "50%", left: 0, right: 0,
+          height: 1, transform: "translateY(-0.5px)",
+          background: "linear-gradient(90deg, transparent, rgba(232,200,135,0.45) 30%, rgba(232,200,135,0.6) 50%, rgba(232,200,135,0.45) 70%, transparent)",
+          zIndex: 2,
+        }} />
+        {/* Brillo superior */}
+        <div style={{
+          position: "absolute", inset: 0,
+          background: "radial-gradient(ellipse at 50% 0%, rgba(232,200,135,0.10), transparent 65%)",
+          pointerEvents: "none",
+        }} />
+        {/* Número con flip */}
+        <span style={{
+          fontFamily: "var(--font-cormorant), serif",
+          fontStyle: "italic",
+          fontWeight: 700,
+          fontSize: "clamp(30px, 9vw, 46px)",
+          lineHeight: 1,
+          letterSpacing: "-1px",
+          fontVariantNumeric: "tabular-nums",
+          background: "linear-gradient(160deg,#C28F45 0%,#f0d99a 45%,#C28F45 100%)",
+          WebkitBackgroundClip: "text",
+          WebkitTextFillColor: "transparent",
+          backgroundClip: "text",
+          transformOrigin: "center center",
+          backfaceVisibility: "hidden",
+          willChange: "transform",
+          ...style,
+        }}>
+          {display}
+        </span>
       </div>
+      <span style={{
+        fontFamily: "var(--font-cormorant), serif",
+        fontStyle: "italic",
+        fontSize: 11,
+        letterSpacing: "2.5px",
+        textTransform: "uppercase",
+        color: "#E8C887",
+        marginTop: 12,
+        opacity: 0.9,
+      }}>
+        {label}
+      </span>
     </div>
   );
 }
@@ -73,40 +118,41 @@ export default function CountdownTimer() {
     <section style={{ padding: "64px 26px" }}>
       <h2 style={{
         fontFamily: "var(--font-great-vibes), cursive",
-        fontSize: 50, textAlign: "center", lineHeight: 1.1, marginBottom: 30,
+        fontSize: 50, textAlign: "center", lineHeight: 1.1, marginBottom: 8,
         background: "linear-gradient(135deg,#C28F45 0%,#E8C887 50%,#C28F45 100%)",
         WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text",
       }}>
         Faltan
       </h2>
+      <p style={{
+        fontFamily: "var(--font-cormorant), serif",
+        fontStyle: "italic", fontSize: 16, color: "var(--text-soft)",
+        textAlign: "center", letterSpacing: 1, marginBottom: 34, fontWeight: 600,
+      }}>
+        Para este día tan especial
+      </p>
 
       <div style={{
-        background: "rgba(15,38,24,0.45)",
-        backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)",
-        border: "1px solid rgba(232,200,135,0.22)",
-        borderRadius: 28, padding: "40px 20px 36px",
-        position: "relative", overflow: "hidden",
+        display: "flex",
+        justifyContent: "center",
+        gap: "clamp(8px, 2.5vw, 16px)",
+        maxWidth: 380,
+        margin: "0 auto",
       }}>
-        <div style={{ position: "absolute", top: -1, left: "15%", right: "15%", height: 1.5,
-          background: "linear-gradient(90deg,transparent,#C28F45 30%,#E8C887 50%,#C28F45 70%,transparent)" }} />
-
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: "8px", maxWidth: 380, margin: "0 auto", justifyItems: "center" }}>
-          <Ring value={time.days} label="Días" max={TOTAL_DAYS} />
-          <Ring value={time.hours} label="Horas" max={24} />
-          <Ring value={time.minutes} label="Minutos" max={60} />
-          <Ring value={time.seconds} label="Segundos" max={60} />
-        </div>
-
-        <div style={{ textAlign: "center", marginTop: 28, paddingTop: 20, borderTop: "1px solid rgba(232,200,135,0.14)" }}>
-          <p style={{
-            fontFamily: "var(--font-cormorant), serif",
-            fontStyle: "italic", fontSize: 17, color: "var(--text-soft)",
-            letterSpacing: 1, lineHeight: 1.6, fontWeight: 600,
-          }}>
-            Cada segundo más cerca de este día especial
-          </p>
-        </div>
+        <FlipUnit value={time.days} label="Días" />
+        <FlipUnit value={time.hours} label="Horas" />
+        <FlipUnit value={time.minutes} label="Min" />
+        <FlipUnit value={time.seconds} label="Seg" />
       </div>
+
+      <p style={{
+        fontFamily: "var(--font-cormorant), serif",
+        fontStyle: "italic", fontSize: 16, color: "var(--text-soft)",
+        textAlign: "center", letterSpacing: 1, lineHeight: 1.6,
+        marginTop: 34, fontWeight: 500, opacity: 0.85,
+      }}>
+        Cada segundo más cerca de celebrar juntos
+      </p>
     </section>
   );
 }
