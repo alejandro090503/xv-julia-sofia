@@ -87,7 +87,7 @@ export default function Hero() {
       <div style={{
         position: "absolute", inset: 0,
         background: hasPhoto
-          ? "linear-gradient(180deg, rgba(15,38,24,0.55) 0%, rgba(15,38,24,0.30) 38%, rgba(15,38,24,0.72) 100%)"
+          ? "linear-gradient(180deg, rgba(15,38,24,0.62) 0%, rgba(15,38,24,0.48) 30%, rgba(15,38,24,0.42) 46%, rgba(15,38,24,0.82) 100%)"
           : "radial-gradient(ellipse 70% 50% at 50% 42%, rgba(232,200,135,0.10) 0%, transparent 70%)",
         pointerEvents: "none",
       }} />
@@ -120,7 +120,7 @@ export default function Hero() {
           lineHeight: 1.72,
           letterSpacing: 0.5,
           color: "#f3efe6",
-          textShadow: hasPhoto ? "0 1px 8px rgba(0,0,0,0.55)" : "none",
+          textShadow: hasPhoto ? "0 1px 10px rgba(0,0,0,0.85), 0 0 24px rgba(0,0,0,0.5)" : "none",
           opacity: 0,
           transform: "translateY(14px)",
           transition: "opacity 0.95s ease, transform 0.95s ease",
