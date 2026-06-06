@@ -4,11 +4,12 @@ import { useEffect, useRef, useState, useCallback } from "react";
 const BASE = "https://bsjoelxktbvlavfoozhk.supabase.co/storage/v1/object/public/fotos-clientes/img/xv-julia-sofia";
 
 const FOTOS = [
-  { src: `${BASE}/carrusel-g01.jpg`, alt: "Julia Sofía de niña" },
-  { src: `${BASE}/carrusel-g04.jpg`, alt: "Julia Sofía con estilo" },
-  { src: `${BASE}/carrusel-g03.jpg`, alt: "Julia Sofía jovencita" },
-  { src: `${BASE}/carrusel-g05.jpg`, alt: "Momentos especiales" },
-  { src: `${BASE}/carrusel-g02.jpg`, alt: "Julia Sofía lista" },
+  { src: `${BASE}/carrusel-v2-01.jpg`, alt: "Julia Sofía de niña", pos: "center 18%" },
+  { src: `${BASE}/carrusel-v2-02.jpg`, alt: "Con su papá", pos: "center 30%" },
+  { src: `${BASE}/carrusel-v2-03.jpg`, alt: "Con su mamá", pos: "center" },
+  { src: `${BASE}/carrusel-v2-04.jpg`, alt: "Creciendo", pos: "center 30%" },
+  { src: `${BASE}/carrusel-v2-05.jpg`, alt: "Día de Muertos", pos: "center 25%" },
+  { src: `${BASE}/carrusel-v2-06.jpg`, alt: "Casi quinceañera", pos: "center 22%" },
 ];
 
 const AUTO_MS = 4200;
@@ -154,7 +155,7 @@ export default function Carrusel() {
               <img
                 src={FOTOS[prev].src}
                 alt={FOTOS[prev].alt}
-                style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: FOTOS[prev].pos }}
               />
             </div>
           )}
@@ -165,7 +166,7 @@ export default function Carrusel() {
               src={FOTOS[idx].src}
               alt={FOTOS[idx].alt}
               loading="lazy"
-              style={{ width: "100%", height: "100%", objectFit: "cover" }}
+              style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: FOTOS[idx].pos }}
             />
             {/* Vignette */}
             <div style={{
