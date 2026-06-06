@@ -10,6 +10,7 @@ const FOTOS = [
   { src: `${BASE}/carrusel-v2-04.jpg`, alt: "Creciendo", pos: "center 30%" },
   { src: `${BASE}/carrusel-v2-05.jpg`, alt: "Día de Muertos", pos: "center 25%" },
   { src: `${BASE}/carrusel-v2-06.jpg`, alt: "Casi quinceañera", pos: "center 22%" },
+  { src: `${BASE}/carrusel-v2-07.jpg`, alt: "Julia Sofía con su mascota", pos: "center 35%" },
 ];
 
 const AUTO_MS = 4200;
