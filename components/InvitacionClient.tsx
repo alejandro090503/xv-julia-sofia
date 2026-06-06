@@ -68,6 +68,11 @@ export default function InvitacionClient() {
           <Familia />
         </ScrollReveal>
 
+        {/* Marco rasgado #2 — quinceañera en jardín de glicinas */}
+        <ScrollReveal>
+          <PhotoFrame variant="framed2" seed={23} />
+        </ScrollReveal>
+
         <ScrollReveal>
           <Ornament />
         </ScrollReveal>

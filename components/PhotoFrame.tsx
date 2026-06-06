@@ -1,16 +1,25 @@
 "use client";
 import { PHOTOS } from "./photos";
 
-/* Foto 2 — de frente, dentro de un marco de papel rasgado (deckle) */
-export default function PhotoFrame() {
-  const hasPhoto = !!PHOTOS.framed;
+interface Props {
+  /** Cuál foto mostrar — "framed" (default, arco) o "framed2" (jardín) */
+  variant?: "framed" | "framed2";
+  /** Seed del ruido del borde rasgado — distinto por variante para que no se vean idénticos */
+  seed?: number;
+}
+
+/* Foto enmarcada con bordes de papel rasgado (deckle) */
+export default function PhotoFrame({ variant = "framed", seed = 7 }: Props) {
+  const photo = PHOTOS[variant];
+  const hasPhoto = !!photo;
+  const filterId = `torn-edge-${variant}`;
 
   return (
     <section style={{ padding: "56px 26px 40px", display: "flex", justifyContent: "center" }}>
-      {/* Filtro SVG para el borde rasgado */}
+      {/* Filtro SVG para el borde rasgado (único por variante) */}
       <svg width="0" height="0" style={{ position: "absolute" }} aria-hidden="true">
-        <filter id="torn-edge">
-          <feTurbulence type="fractalNoise" baseFrequency="0.014" numOctaves="3" seed="7" result="noise" />
+        <filter id={filterId}>
+          <feTurbulence type="fractalNoise" baseFrequency="0.014" numOctaves="3" seed={seed} result="noise" />
           <feDisplacementMap in="SourceGraphic" in2="noise" scale="16" />
         </filter>
       </svg>
@@ -21,18 +30,18 @@ export default function PhotoFrame() {
         filter: "drop-shadow(0 16px 36px rgba(0,0,0,0.45))",
       }}>
         <div style={{
-          filter: "url(#torn-edge)",
+          filter: `url(#${filterId})`,
           background: "#f6f2ea",
           padding: 12,
         }}>
           <div style={{
             width: "100%",
-            aspectRatio: "4 / 5",
+            aspectRatio: "9 / 14",
             overflow: "hidden",
             background: hasPhoto
               ? "transparent"
               : "linear-gradient(160deg, #1c402c 0%, #2d5a3f 45%, #0f2618 100%)",
-            backgroundImage: hasPhoto ? `url("${PHOTOS.framed}")` : undefined,
+            backgroundImage: hasPhoto ? `url("${photo}")` : undefined,
             backgroundSize: "cover",
             backgroundPosition: "center",
             display: "flex",
