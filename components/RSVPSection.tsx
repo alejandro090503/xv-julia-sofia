@@ -1,8 +1,9 @@
 "use client";
+import { useState, useEffect } from "react";
 
-const WA_NUMERO = "524434778671";
-const MENSAJE = `¡Hola! Con mucho gusto confirmo mi asistencia a la celebración de Julia Sofía Martínez Chávez. 🎉
-¡Nos vemos pronto! 💫`;
+const PANEL_API = "https://panel-invitados.vercel.app/api/confirmar";
+const RSVP_URL = "https://xv-julia-sofia.vercel.app";
+const DEADLINE = new Date(2026, 5, 8, 23, 59, 59, 999);
 
 function Corner({ pos }: { pos: "tl" | "tr" | "bl" | "br" }) {
   const t = {
@@ -21,9 +22,126 @@ function Corner({ pos }: { pos: "tl" | "tr" | "bl" | "br" }) {
 }
 
 export default function RSVPSection() {
-  const handleConfirm = () => {
-    const url = `https://wa.me/${WA_NUMERO}?text=${encodeURIComponent(MENSAJE)}`;
-    window.open(url, "_blank");
+  const frozen = Date.now() > DEADLINE.getTime();
+  const [nombrePara, setNombrePara] = useState("");
+  const [pasesAsignados, setPasesAsignados] = useState(1);
+  const [pasesLoaded, setPasesLoaded] = useState(false);
+  const [choice, setChoice] = useState<"yes" | "no" | null>(null);
+  const [nombres, setNombres] = useState<string[]>([""]);
+  const [feedback, setFeedback] = useState("");
+  const [feedbackColor, setFeedbackColor] = useState<string>("#1c402c");
+  const [loading, setLoading] = useState(false);
+  const [btnLabel, setBtnLabel] = useState(frozen ? "Fecha límite alcanzada" : "Confirmar");
+
+  // Lee parámetros del URL + guard silencioso (autoritativo desde el panel)
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const para = (params.get("para") || "").trim();
+    const rawP = parseInt(params.get("pases") || "1", 10);
+    const urlP = (isNaN(rawP) || rawP < 1 || rawP > 20) ? 1 : rawP;
+    setNombrePara(para);
+    setPasesAsignados(urlP);
+
+    if (!para) {
+      // Sin nombre no podemos consultar al panel — usamos URL como fallback
+      setPasesLoaded(true);
+      return;
+    }
+
+    fetch(`${PANEL_API}?nombre=${encodeURIComponent(para)}&url_boda=${encodeURIComponent(RSVP_URL)}`)
+      .then((r) => r.json())
+      .then((resp) => {
+        const d = resp.invitado;
+        let pasesReal = urlP;
+        if (d && typeof d.pases === "number" && d.pases > 0 && d.pases <= 20) {
+          pasesReal = d.pases;
+          setPasesAsignados(pasesReal);
+        }
+        if (d && (d.estado === "confirmado" || d.estado === "declino")) {
+          const c = d.estado === "confirmado" ? "yes" : "no";
+          if (d.nombres_confirmados?.length) {
+            setNombres(Array(pasesReal).fill("").map((_, i) => d.nombres_confirmados[i] || ""));
+          } else {
+            setNombres(Array(pasesReal).fill(""));
+          }
+          setChoice(c);
+          setBtnLabel("Actualizar respuesta");
+          setFeedback(
+            c === "yes"
+              ? "¡Ya tienes confirmada tu asistencia! Puedes actualizar tu respuesta."
+              : "Ya tienes registrado que no podrás asistir. Puedes cambiar tu respuesta."
+          );
+        } else {
+          setNombres(Array(pasesReal).fill(""));
+        }
+        setPasesLoaded(true);
+      })
+      .catch(() => setPasesLoaded(true));
+  }, []);
+
+  function handleSelect(c: "yes" | "no") {
+    setChoice(c);
+    setFeedback("");
+  }
+
+  async function handleConfirm() {
+    if (frozen || loading) return;
+    if (!choice) {
+      setFeedbackColor("#a04a2a");
+      setFeedback("Por favor selecciona si asistirás o no.");
+      return;
+    }
+    const nombresFilled = choice === "yes" ? nombres.filter((n) => n.trim()) : [];
+    if (choice === "yes" && nombresFilled.length === 0) {
+      setFeedbackColor("#a04a2a");
+      setFeedback("Por favor escribe al menos un nombre.");
+      return;
+    }
+    setLoading(true);
+    setBtnLabel("Enviando…");
+    setFeedback("");
+    try {
+      await fetch(PANEL_API, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          nombre: nombrePara || "Invitado",
+          url_boda: RSVP_URL,
+          estado: choice === "yes" ? "confirmado" : "declino",
+          pases_confirmados: choice === "yes" ? nombresFilled.length : 0,
+          nombres_confirmados: choice === "yes" ? nombresFilled : [],
+        }),
+      });
+      setBtnLabel("Actualizar respuesta");
+      setFeedbackColor(choice === "yes" ? "#1c402c" : "#7d5720");
+      setFeedback(
+        choice === "yes"
+          ? "¡Tu asistencia ha sido confirmada! Nos vemos pronto."
+          : "Hemos registrado que no podrás asistir. ¡Gracias por avisarnos!"
+      );
+    } catch {
+      setFeedbackColor("#a04a2a");
+      setFeedback("Error de conexión. Intenta de nuevo.");
+      setBtnLabel("Confirmar");
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  const togglePillBase: React.CSSProperties = {
+    flex: 1,
+    padding: "13px 8px",
+    border: "1.5px solid rgba(194,143,69,0.4)",
+    background: "rgba(255,255,255,0.5)",
+    cursor: frozen ? "not-allowed" : "pointer",
+    fontFamily: "var(--font-cormorant), serif",
+    fontStyle: "italic",
+    fontSize: 17,
+    fontWeight: 600,
+    color: "#3a3a3a",
+    borderRadius: 10,
+    transition: "all .25s",
+    opacity: frozen ? 0.45 : 1,
   };
 
   return (
@@ -91,7 +209,7 @@ export default function RSVPSection() {
           </p>
 
           {/* Divisor con corazón */}
-          <div style={{ display: "flex", alignItems: "center", gap: 14, maxWidth: 300, margin: "0 auto 30px" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 14, maxWidth: 300, margin: "0 auto 24px" }}>
             <div style={{ flex: 1, height: 1, background: "linear-gradient(to right,transparent,rgba(194,143,69,0.5),transparent)" }} />
             <svg width="16" height="16" viewBox="0 0 24 24" fill="#C28F45" style={{ flexShrink: 0, opacity: 0.85 }}>
               <path d="M12 21.593c-5.63-5.539-11-10.297-11-14.402 0-3.791 3.068-5.191 5.281-5.191 1.312 0 4.151.501 5.719 4.457 1.59-3.968 4.464-4.447 5.726-4.447 2.54 0 5.274 1.621 5.274 5.181 0 4.069-5.136 8.625-11 14.402z" />
@@ -99,8 +217,118 @@ export default function RSVPSection() {
             <div style={{ flex: 1, height: 1, background: "linear-gradient(to right,transparent,rgba(194,143,69,0.5),transparent)" }} />
           </div>
 
+          {/* Personalización */}
+          {nombrePara && (
+            <p style={{
+              fontFamily: "var(--font-cormorant), serif",
+              fontStyle: "italic",
+              fontSize: 17,
+              color: "#7d5720",
+              marginBottom: 18,
+              lineHeight: 1.5,
+            }}>
+              Esta invitación es para {nombrePara}
+            </p>
+          )}
+
+          {/* Display pases */}
+          {nombrePara && (
+            <div style={{
+              maxWidth: 340,
+              margin: "0 auto 22px",
+              padding: "14px 26px",
+              background: "rgba(194,143,69,0.10)",
+              border: "1px solid rgba(194,143,69,0.30)",
+              borderRadius: 12,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              gap: 14,
+            }}>
+              <span style={{
+                fontFamily: "var(--font-lato), sans-serif",
+                fontSize: 11,
+                letterSpacing: 3,
+                textTransform: "uppercase",
+                color: "#7d5720",
+                fontWeight: 600,
+              }}>Pases</span>
+              <span style={{
+                fontFamily: "var(--font-great-vibes), cursive",
+                fontSize: 42,
+                color: "#1c402c",
+                lineHeight: 1,
+              }}>{pasesLoaded ? pasesAsignados : "…"}</span>
+            </div>
+          )}
+
+          {/* Toggle */}
+          <div style={{ display: "flex", gap: 10, maxWidth: 380, margin: "0 auto 18px" }}>
+            <button
+              type="button"
+              disabled={!pasesLoaded || frozen}
+              onClick={() => handleSelect("yes")}
+              style={{
+                ...togglePillBase,
+                background: choice === "yes" ? "rgba(28,64,44,0.15)" : "rgba(255,255,255,0.5)",
+                borderColor: choice === "yes" ? "#1c402c" : "rgba(194,143,69,0.4)",
+                color: choice === "yes" ? "#1c402c" : "#3a3a3a",
+              }}
+            >
+              Asistiré
+            </button>
+            <button
+              type="button"
+              disabled={!pasesLoaded || frozen}
+              onClick={() => handleSelect("no")}
+              style={{
+                ...togglePillBase,
+                background: choice === "no" ? "rgba(125,87,32,0.12)" : "rgba(255,255,255,0.5)",
+                borderColor: choice === "no" ? "#7d5720" : "rgba(194,143,69,0.4)",
+                color: choice === "no" ? "#7d5720" : "#3a3a3a",
+              }}
+            >
+              No podré asistir
+            </button>
+          </div>
+
+          {/* Name fields */}
+          {choice === "yes" && (
+            <div style={{ display: "flex", flexDirection: "column", gap: 10, maxWidth: 380, margin: "0 auto 18px" }}>
+              {nombres.map((n, i) => (
+                <input
+                  key={i}
+                  type="text"
+                  value={n}
+                  placeholder={pasesAsignados === 1 ? "Tu nombre completo" : `Invitado ${i + 1}`}
+                  maxLength={60}
+                  autoComplete="off"
+                  onChange={(e) => {
+                    const copy = [...nombres];
+                    copy[i] = e.target.value;
+                    setNombres(copy);
+                  }}
+                  style={{
+                    width: "100%",
+                    padding: "14px 18px",
+                    border: "1.5px solid rgba(194,143,69,0.3)",
+                    borderRadius: 10,
+                    background: "rgba(255,255,255,0.85)",
+                    fontFamily: "var(--font-cormorant), serif",
+                    fontSize: 16,
+                    color: "#3a3a3a",
+                    outline: "none",
+                    minHeight: 50,
+                    WebkitAppearance: "none",
+                  }}
+                />
+              ))}
+            </div>
+          )}
+
           <button
             onClick={handleConfirm}
+            disabled={loading || frozen || !pasesLoaded}
             style={{
               display: "inline-flex",
               alignItems: "center",
@@ -111,17 +339,34 @@ export default function RSVPSection() {
               color: "#f3efe6",
               borderRadius: 50,
               border: "1px solid rgba(194,143,69,0.45)",
-              cursor: "pointer",
+              cursor: loading || frozen || !pasesLoaded ? "not-allowed" : "pointer",
               fontFamily: "var(--font-lato), sans-serif",
               fontSize: 15,
               fontWeight: 700,
               textTransform: "uppercase",
               letterSpacing: 3,
               boxShadow: "0 8px 26px rgba(28,64,44,0.30)",
+              opacity: loading || frozen || !pasesLoaded ? 0.6 : 1,
             }}
           >
-            Confirmar
+            {btnLabel}
           </button>
+
+          {feedback && (
+            <p style={{
+              fontFamily: "var(--font-cormorant), serif",
+              fontStyle: "italic",
+              fontSize: 16,
+              color: feedbackColor,
+              marginTop: 18,
+              maxWidth: 380,
+              marginLeft: "auto",
+              marginRight: "auto",
+              lineHeight: 1.5,
+            }}>
+              {feedback}
+            </p>
+          )}
 
           <div style={{
             display: "inline-flex", alignItems: "center", gap: 8,
