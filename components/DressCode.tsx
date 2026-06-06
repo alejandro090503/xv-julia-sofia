@@ -78,23 +78,37 @@ export default function DressCode() {
           Color sugerido
         </p>
 
-        {/* Esfera #D4C5B2 con brillo */}
+        {/* Esfera multicolor — el que deseen */}
         <div style={{ display: "flex", justifyContent: "center", marginBottom: 8 }}>
           <div style={{
+            position: "relative",
             width: 76, height: 76, borderRadius: "50%",
-            background: "radial-gradient(circle at 32% 28%, #efe6da 0%, #D4C5B2 42%, #b6a690 100%)",
-            boxShadow: "0 10px 26px rgba(0,0,0,0.4), inset 0 -6px 14px rgba(120,105,80,0.4), inset 0 4px 10px rgba(255,255,255,0.6)",
-            border: "1px solid rgba(232,200,135,0.4)",
-          }} />
+            background: "conic-gradient(from 210deg, #d8a8b5, #c9a674, #b8a48e, #8aa593, #6f8db5, #a89bbf, #c592a8, #d8a8b5)",
+            boxShadow: "0 10px 26px rgba(0,0,0,0.4), inset 0 -6px 14px rgba(0,0,0,0.3), inset 0 4px 10px rgba(255,255,255,0.55)",
+            border: "1px solid rgba(232,200,135,0.45)",
+            overflow: "hidden",
+          }}>
+            {/* highlight para efecto esfera 3D */}
+            <div style={{
+              position: "absolute",
+              top: "8%", left: "18%",
+              width: "38%", height: "32%",
+              borderRadius: "50%",
+              background: "radial-gradient(circle, rgba(255,255,255,0.55) 0%, transparent 70%)",
+              filter: "blur(2px)",
+            }} />
+          </div>
         </div>
         <p style={{
-          fontFamily: "var(--font-lato), sans-serif",
-          fontSize: 13,
+          fontFamily: "var(--font-cormorant), serif",
+          fontStyle: "italic",
+          fontWeight: 600,
+          fontSize: 15,
           letterSpacing: 2,
           color: "var(--text-soft)",
           marginBottom: 24,
         }}>
-          Tonos arena / champagne
+          El color que tú prefieras
         </p>
 
         {/* Evitar blanco */}
@@ -122,14 +136,14 @@ export default function DressCode() {
             color: "var(--text)", letterSpacing: 0.5, lineHeight: 1.55,
             marginBottom: 10,
           }}>
-            Se reserva el color blanco para la quinceañera
+            Se reserva el color verde esmeralda para la quinceañera
           </p>
           <div style={{ display: "flex", justifyContent: "center" }}>
             <div style={{
               width: 28, height: 28, borderRadius: "50%",
-              background: "radial-gradient(circle at 32% 28%, #ffffff 0%, #f3f1ec 60%, #ddd9d0 100%)",
+              background: "radial-gradient(circle at 32% 28%, #2eb872 0%, #157347 55%, #0a3d24 100%)",
               border: "1px solid rgba(232,200,135,0.4)",
-              boxShadow: "0 2px 8px rgba(0,0,0,0.3)",
+              boxShadow: "0 2px 8px rgba(0,0,0,0.45), inset 0 -2px 4px rgba(0,0,0,0.4), inset 0 2px 4px rgba(255,255,255,0.3)",
             }} />
           </div>
         </div>
